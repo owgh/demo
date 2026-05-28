@@ -9,16 +9,19 @@
     :root {
       --brand: #4c1d95;
       --white: #ffffff;
-      --off-white: #f9f8f5;
+      --off-white: #f7f6f3;
+      --gray-200: #e8e5de;
       --gray-300: #d4d0c8;
       --gray-500: #9a9589;
-      --gray-700: #5c5850;
+      --gray-600: #746e63;
+      --gray-700: #4f4a41;
       --dark: #0c0b09;
-      --text: #1a1917;
+      --text: #18170f;
       --radius: 14px;
       --radius-lg: 24px;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-      --shadow-lg: 0 24px 64px rgba(0,0,0,0.16);
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.05), 0 2px 12px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 20px 56px rgba(0,0,0,0.14);
       --ease: cubic-bezier(0.4,0,0.2,1);
       --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
     }
@@ -257,14 +260,17 @@
       pointer-events:none
     }
     .container{max-width:1140px;margin:0 auto;position:relative;z-index:1}
-    .section-eyebrow{display:inline-flex;align-items:center;gap:12px;color:var(--brand);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px}
-    .section-eyebrow-line{width:24px;height:1.5px;background:var(--brand)}
-    .section-title{font-family:'Playfair Display',serif;font-size:clamp(30px,4.5vw,52px);font-weight:700;line-height:1.18;letter-spacing:-1.5px;color:var(--text)}
+    .section-eyebrow{display:inline-flex;align-items:center;gap:12px;color:var(--brand);font-size:10.5px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:16px}
+    .section-eyebrow-line{width:20px;height:1.5px;background:var(--brand);flex-shrink:0}
+    .section-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:700;line-height:1.2;letter-spacing:-1.2px;color:var(--text)}
     .section-title em{font-style:italic;font-weight:400;color:var(--brand)}
 
-    .services-header{text-align:center;margin-bottom:72px}
+    /* Scroll anchors clear fixed nav */
+    #services,#about,#contact{scroll-margin-top:90px}
+
+    .services-header{text-align:center;margin-bottom:64px}
     .services-header .section-title{max-width:100%}
-    .services-sub{font-size:16px;color:var(--gray-500);max-width:480px;margin:18px auto 0;line-height:1.7;font-weight:300}
+    .services-sub{font-size:15.5px;color:var(--gray-600);max-width:460px;margin:16px auto 0;line-height:1.75;font-weight:400}
 
     .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 
@@ -301,11 +307,11 @@
       transition:transform .4s var(--ease-spring),box-shadow .4s
     }
     .service-card:hover .service-icon{transform:scale(1.12) rotate(-6deg);box-shadow:0 16px 40px #4c1d9555}
-    .service-card h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:-.3px}
-    .service-card p{font-size:14.5px;color:var(--gray-500);line-height:1.72;font-weight:300}
-    .service-arrow{display:inline-flex;align-items:center;gap:6px;margin-top:22px;font-size:13px;font-weight:600;color:var(--brand);letter-spacing:.3px;transition:gap .3s var(--ease)}
+    .service-card h3{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.2px;line-height:1.3}
+    .service-card p{font-size:14px;color:var(--gray-600);line-height:1.78;font-weight:400}
+    .service-arrow{display:inline-flex;align-items:center;gap:7px;margin-top:20px;font-size:12.5px;font-weight:600;color:var(--brand);letter-spacing:.5px;text-transform:uppercase;transition:gap .3s var(--ease)}
     .service-arrow svg{transition:transform .3s var(--ease)}
-    .service-card:hover .service-arrow{gap:10px}
+    .service-card:hover .service-arrow{gap:11px}
     .service-card:hover .service-arrow svg{transform:translateX(3px)}
 
     /* WAVE 2: services → about */
@@ -377,7 +383,7 @@
     .about-rating-sub{font-size:11px;color:var(--gray-500);margin-top:2px}
 
     .about-content .section-title{margin-bottom:24px}
-    .about-body{font-size:16px;color:var(--gray-700);line-height:1.82;margin-bottom:14px;font-weight:300}
+    .about-body{font-size:16px;color:var(--gray-600);line-height:1.85;margin-bottom:16px;font-weight:400;letter-spacing:.01em}
     .about-phone{
       display:inline-flex;align-items:center;gap:12px;
       color:var(--brand);font-size:20px;font-weight:700;text-decoration:none;
@@ -622,29 +628,29 @@
     <div class="services-header reveal">
       <div class="section-eyebrow"><span class="section-eyebrow-line"></span>What We Offer</div>
       <h2 class="section-title">Our <em>Services</em></h2>
-      <p class="services-sub">Everything you need, delivered with care and professionalism right here in Ottawa.</p>
+      <p class="services-sub">Trusted by Ottawa residents — professional, reliable, and built around your needs.</p>
     </div>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-num">01</div>
         <div class="service-icon"></div>
         <h3>Math</h3>
-        <p>Expert math tailored to your needs, delivered by our professional team in Ottawa.</p>
-        <span class="service-arrow">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <p>Professional math performed by our skilled team. We take pride in every detail and make sure you leave completely satisfied.</p>
+        <span class="service-arrow">Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
       <div class="service-card reveal reveal-delay-1">
         <div class="service-num">02</div>
         <div class="service-icon"></div>
         <h3>Science</h3>
-        <p>Premium science with quality and attention to detail that keeps our clients coming back.</p>
-        <span class="service-arrow">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <p>Our science service is designed around your schedule and preferences — because quality should never feel rushed.</p>
+        <span class="service-arrow">Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-num">03</div>
         <div class="service-icon"></div>
         <h3>Test Prep</h3>
-        <p>Reliable test prep for Ottawa residents who deserve nothing but the best experience.</p>
-        <span class="service-arrow">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <p>Dependable test prep for Ottawa clients who expect the best. We're consistent, punctual, and always professional.</p>
+        <span class="service-arrow">Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
     </div>
   </div>
@@ -702,20 +708,23 @@
     <div class="contact-inner">
       <div class="contact-info">
         <div class="reveal">
-          <div class="section-eyebrow"><span class="section-eyebrow-line"></span>Get In Touch</div>
-          <h2 class="section-title">Book Your <em>Appointment</em></h2>
+          <div class="section-eyebrow"><span class="section-eyebrow-line"></span>Book an Appointment</div>
+          <h2 class="section-title">Ready to <em>Get Started?</em></h2>
         </div>
+        <p style="font-size:15.5px;color:var(--gray-600);line-height:1.75;margin:20px 0 32px;font-weight:400" class="reveal reveal-delay-1">
+          We'd love to hear from you. Fill out the form, give us a call, or just stop by — we're always happy to help.
+        </p>
         <div class="contact-detail reveal reveal-delay-1">
           <div class="contact-detail-icon">📍</div>
-          <div class="contact-detail-text"><strong>Our Location</strong>825 Exhibition Way Unit 101, Ottawa, ON K1S 5J3, Canada</div>
+          <div class="contact-detail-text"><strong>Location</strong>825 Exhibition Way Unit 101, Ottawa, ON K1S 5J3, Canada</div>
         </div>
         <div class="contact-detail reveal reveal-delay-2">
           <div class="contact-detail-icon">📞</div>
-          <div class="contact-detail-text"><strong>Phone</strong></div>
+          <div class="contact-detail-text"><strong>Call or Text</strong></div>
         </div>
         <div class="contact-detail reveal reveal-delay-3">
           <div class="contact-detail-icon">🕐</div>
-          <div class="contact-detail-text"><strong>Hours</strong>Mon–Fri 9am–7pm · Sat 9am–5pm</div>
+          <div class="contact-detail-text"><strong>Hours</strong>Mon–Fri 9am–7pm · Sat 9am–5pm · Sun Closed</div>
         </div>
       </div>
       <div class="reveal">
@@ -723,7 +732,7 @@
           <div class="form-group"><input type="text" id="name" placeholder=" "><label for="name">Your Name</label></div>
           <div class="form-group"><input type="email" id="email" placeholder=" "><label for="email">Email Address</label></div>
           <div class="form-group"><input type="tel" id="phone-f" placeholder=" "><label for="phone-f">Phone Number</label></div>
-          <div class="form-group"><textarea id="message" placeholder=" "></textarea><label for="message">Your Message</label></div>
+          <div class="form-group"><textarea id="message" placeholder=" "></textarea><label for="message">How can we help you?</label></div>
           <button type="button" class="btn btn-brand form-submit">Send Message →</button>
         </form>
       </div>
@@ -746,22 +755,23 @@
   <div class="pitch-glow-3"></div>
   <div class="pitch-grid"></div>
   <div class="pitch-content reveal">
-    <div class="pitch-badge">✦ Free Website Demo</div>
-    <h2>This is what your<br><em>website could look like.</em></h2>
+    <div class="pitch-badge">✦ Free Demo — Built for 404</div>
+    <h2>Your business deserves<br>a website <em>this good.</em></h2>
     <p class="pitch-sub">
-      This is a free demo I built specifically for 404.<br>
-      We can customise every detail — colours, features, layout, anything you have in mind.
+      I built this demo specifically for you — no charge, no obligation.<br>
+      Every colour, every section, every feature is fully customisable.<br>
+      Tell me your vision and I'll bring it to life in 1–2 weeks.
     </p>
     <div class="pitch-contacts">
       <a href="mailto:hussein.ottawaweb@gmail.com" class="pitch-contact-item"><span>📧</span>hussein.ottawaweb@gmail.com</a>
       <a href="tel:3435975450" class="pitch-contact-item"><span>📞</span>(343)597-5450</a>
     </div>
-    <a href="mailto:hussein.ottawaweb@gmail.com?subject=I saw my website demo — 404&body=Hi Hussein, I saw the demo you built for 404 and I'd love to talk more." class="pitch-cta">
+    <a href="mailto:hussein.ottawaweb@gmail.com?subject=I saw my website demo — 404&body=Hi Hussein,%0A%0AI saw the demo you built for 404 and I'm interested in talking more.%0A%0AHere's what I have in mind:" class="pitch-cta">
       Let's Build It Together <span class="pitch-arrow">→</span>
     </a>
     <p class="pitch-disclaimer">
-      Built by Hussein · Ottawa Web Developer · No obligation, just a conversation.<br>
-      Every feature is customisable — tell me your vision and I'll bring it to life.
+      Hussein · Ottawa Web Developer · Starting at $500 flat fee<br>
+      Reply to my email or call — I'd love to hear what you have in mind.
     </p>
   </div>
 </section>
