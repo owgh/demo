@@ -1,6 +1,7 @@
 CATEGORY_CONFIG = {
     "barbershop": {
         "color": "#0f172a",
+        "accent": "#c9a84c",   # gold — classic premium barbershop
         "services": ("Haircut", "Fade", "Beard Trim"),
         "about": (
             "{name} is Ottawa's go-to barbershop for clean cuts and sharp styles.",
@@ -9,6 +10,7 @@ CATEGORY_CONFIG = {
     },
     "restaurant": {
         "color": "#7c2d12",
+        "accent": "#f59e0b",   # amber — warm and appetizing
         "services": ("Dine In", "Takeout", "Catering"),
         "about": (
             "{name} brings authentic flavours and warm hospitality to Ottawa's dining scene.",
@@ -17,6 +19,7 @@ CATEGORY_CONFIG = {
     },
     "nail salon": {
         "color": "#831843",
+        "accent": "#f9a8d4",   # soft pink — feminine contrast
         "services": ("Manicure", "Pedicure", "Gel Nails"),
         "about": (
             "At {name}, we make every visit a relaxing, beautiful experience.",
@@ -25,6 +28,7 @@ CATEGORY_CONFIG = {
     },
     "dental clinic": {
         "color": "#0f4c5c",
+        "accent": "#67e8f9",   # cyan — clean and clinical
         "services": ("Cleaning", "Whitening", "Checkup"),
         "about": (
             "{name} provides gentle, professional dental care for the whole family in Ottawa.",
@@ -33,6 +37,7 @@ CATEGORY_CONFIG = {
     },
     "personal trainer": {
         "color": "#1c1c1c",
+        "accent": "#f97316",   # orange — energy and power
         "services": ("1-on-1 Training", "Nutrition", "Assessment"),
         "about": (
             "{name} helps Ottawa residents build strength, lose weight, and hit their fitness goals.",
@@ -41,6 +46,7 @@ CATEGORY_CONFIG = {
     },
     "physiotherapy clinic": {
         "color": "#1e3a5f",
+        "accent": "#38bdf8",   # sky blue — healing and calm
         "services": ("Assessment", "Treatment", "Rehab"),
         "about": (
             "{name} helps Ottawa patients recover faster and move better.",
@@ -49,6 +55,7 @@ CATEGORY_CONFIG = {
     },
     "tutoring": {
         "color": "#4c1d95",
+        "accent": "#c4b5fd",   # light purple — knowledge and creativity
         "services": ("Math", "Science", "Test Prep"),
         "about": (
             "{name} helps Ottawa students build confidence and improve their grades.",
@@ -57,6 +64,7 @@ CATEGORY_CONFIG = {
     },
     "daycare": {
         "color": "#14532d",
+        "accent": "#86efac",   # bright green — playful and nurturing
         "services": ("Full Day", "Half Day", "Drop-In"),
         "about": (
             "{name} provides a safe, nurturing environment for Ottawa children to learn and grow.",
@@ -65,6 +73,7 @@ CATEGORY_CONFIG = {
     },
     "alterations tailor": {
         "color": "#78350f",
+        "accent": "#fcd34d",   # warm gold — craftsmanship and quality
         "services": ("Alterations", "Tailoring", "Repairs"),
         "about": (
             "{name} delivers expert clothing alterations and custom tailoring in Ottawa.",
@@ -73,6 +82,7 @@ CATEGORY_CONFIG = {
     },
     "plumber": {
         "color": "#1e3a5f",
+        "accent": "#7dd3fc",   # light blue — water and reliability
         "services": ("Repairs", "Installation", "Emergency"),
         "about": (
             "{name} provides fast, reliable plumbing services to Ottawa homeowners and businesses.",
@@ -81,6 +91,7 @@ CATEGORY_CONFIG = {
     },
     "electrician": {
         "color": "#1c1c1c",
+        "accent": "#fbbf24",   # electric yellow — energy and safety
         "services": ("Wiring", "Panels", "Inspections"),
         "about": (
             "{name} delivers safe, certified electrical work for Ottawa homes and businesses.",
@@ -89,6 +100,7 @@ CATEGORY_CONFIG = {
     },
     "driving school": {
         "color": "#1f2937",
+        "accent": "#fb923c",   # orange — movement and confidence
         "services": ("Beginner", "Road Test", "Refresher"),
         "about": (
             "{name} helps Ottawa drivers build confidence and pass their road test.",
@@ -97,6 +109,7 @@ CATEGORY_CONFIG = {
     },
     "cleaning service": {
         "color": "#0c4a6e",
+        "accent": "#7dd3fc",   # light blue — freshness and clarity
         "services": ("Residential", "Commercial", "Deep Clean"),
         "about": (
             "{name} delivers spotless cleaning services to Ottawa homes and offices.",
@@ -105,6 +118,7 @@ CATEGORY_CONFIG = {
     },
     "landscaping": {
         "color": "#14532d",
+        "accent": "#86efac",   # bright green — nature and growth
         "services": ("Lawn Care", "Design", "Snow Removal"),
         "about": (
             "{name} transforms Ottawa outdoor spaces with expert lawn care and landscaping.",
@@ -113,6 +127,7 @@ CATEGORY_CONFIG = {
     },
     "painting contractor": {
         "color": "#374151",
+        "accent": "#fca5a5",   # warm coral — creativity and colour
         "services": ("Interior", "Exterior", "Touch-ups"),
         "about": (
             "{name} refreshes Ottawa homes and businesses with professional painting services.",
@@ -123,6 +138,7 @@ CATEGORY_CONFIG = {
 
 DEFAULT_CATEGORY = {
     "color": "#1f2937",
+    "accent": "#60a5fa",
     "services": ("Consultation", "Service", "Support"),
     "about": (
         "{name} provides professional services to Ottawa residents and businesses.",

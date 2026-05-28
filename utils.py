@@ -49,6 +49,7 @@ def build_tokens(lead: dict, ai_copy: dict) -> dict:
     cfg = CATEGORY_CONFIG.get(category, DEFAULT_CATEGORY)
     s1, s2, s3 = cfg["services"]
     about1, about2 = cfg["about"]
+    accent = cfg.get("accent", "#ffffff")
 
     phone_raw = re.sub(r"[^0-9]", "", phone)
 
@@ -61,6 +62,7 @@ def build_tokens(lead: dict, ai_copy: dict) -> dict:
         "ADDRESS": address,
         "CITY": "Ottawa",
         "HERO_COLOR": cfg["color"],
+        "ACCENT_COLOR": accent,
         "SERVICE_1": s1,
         "SERVICE_2": s2,
         "SERVICE_3": s3,
