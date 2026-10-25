@@ -33,18 +33,7 @@ ASSET_VERSION = "2.0.0"
 THEME_COLOR = {"care": "#edf1ee", "trades": "#1c3fa8", "food": "#fff4e6", "barber": "#122033", "salon": "#f8e7e2",
                "pro": "#f5f6f8", "gym": "#0e1630", "kids": "#ffffff", "pets": "#ecf5f2", "florist": "#fbf0ee", "shop": "#f3f1f7"}
 
-HOOK_FEATURE = {
-    "bodymap": "A body map that turns “it hurts here” into a booked visit",
-    "estimate": "Instant price estimates that turn into booked visits",
-    "order": "Online ordering for pickup, with live order status",
-    "booking": "Online booking with real open times and calendar invites",
-    "mortgage": "A payment calculator that books calls",
-    "taxday": "A tax-deadline countdown and checklist that books appointments",
-    "intake": "A three-question form that books free consultations",
-    "quiz": "A plan finder that turns visitors into first appointments",
-    "timetable": "A class schedule people can reserve from",
-    "bouquet": "A bouquet builder that takes delivery orders",
-}
+HOOK_FEATURE = sd.HOOK_FEATURE
 
 
 def load_template() -> str:

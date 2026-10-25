@@ -818,6 +818,19 @@ DEFAULT = {
     "services": [_s("Consultation", "Tell us what you need.", 30, 0), _s("Standard service", "", 60, None), _s("Follow-up", "", 30, None)],
 }
 
+HOOK_FEATURE = {
+    "bodymap": "A body map that turns “it hurts here” into a booked visit",
+    "estimate": "Instant price estimates that turn into booked visits",
+    "order": "Online ordering for pickup, with live order status",
+    "booking": "Online booking with real open times and calendar invites",
+    "mortgage": "A payment calculator that books calls",
+    "taxday": "A tax-deadline countdown and checklist that books appointments",
+    "intake": "A three-question form that books free consultations",
+    "quiz": "A plan finder that turns visitors into first appointments",
+    "timetable": "A class schedule people can reserve from",
+    "bouquet": "A bouquet builder that takes delivery orders",
+}
+
 ESTIMATE_URGENCY = [["Flexible", 0.92], ["Within a week", 1.0], ["Urgent (48 h)", 1.35]]
 
 ABOUT = {
