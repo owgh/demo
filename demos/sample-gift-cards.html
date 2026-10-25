@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gift cards · Northline Barbers (example)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #17150f; --muted: #6c675c; --line: #e4dfd3; --bg: #f6f3ec; --surface: #fff;
+    --brand: #1f3b2d; --gold: #c8a24a; --gold-soft: #f3e8c8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; overflow-x: hidden; }
+  body { font: 400 16px/1.5 'DM Sans', system-ui, -apple-system, sans-serif; color: var(--ink); background: var(--bg); padding-bottom: 110px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+  header { background: var(--brand); color: #fff; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 16px; padding-bottom: 16px; }
+  .logo { font: 900 1.35rem/1 'Playfair Display', Georgia, serif; letter-spacing: .01em; }
+  .logo small { display: block; font: 500 .72rem 'DM Sans', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+  header nav { font-size: .92rem; color: #d7e1da; }
+  .hero { padding: 28px 0 8px; }
+  h1 { font: 700 clamp(1.9rem, 6vw, 2.8rem)/1.05 'Playfair Display', Georgia, serif; margin: 0 0 8px; }
+  .lede { color: var(--muted); margin: 0; max-width: 52ch; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 22px 0 10px; }
+  @media (min-width: 820px) { .grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; } .preview-col { position: sticky; top: 16px; } }
+
+  /* the card */
+  .card-preview { aspect-ratio: 1.586; border-radius: 18px; padding: 22px; color: #fff; position: relative; overflow: hidden;
+    box-shadow: 0 18px 40px rgba(23, 21, 15, .22); display: flex; flex-direction: column; justify-content: space-between; transition: background .35s ease; }
+  .card-preview::after { content: ""; position: absolute; inset: auto -30% -55% auto; width: 75%; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.08); }
+  .d-holiday { background: radial-gradient(circle at 85% 15%, #2f6b4c 0%, #1f3b2d 45%, #13251c 100%); }
+  .d-classic { background: linear-gradient(135deg, #17150f 0%, #3a352a 100%); }
+  .d-birthday { background: linear-gradient(135deg, #8c2f39 0%, #c8553d 100%); }
+  .cp-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1; }
+  .cp-brand { font: 900 1.15rem/1 'Playfair Display', Georgia, serif; }
+  .cp-brand small { display: block; font: 500 .66rem 'DM Sans', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-top: 5px; }
+  .cp-flake { font-size: 1.5rem; opacity: .9; }
+  .cp-amount { font: 700 clamp(2.2rem, 9vw, 3rem)/1 'DM Sans', sans-serif; position: relative; z-index: 1; letter-spacing: -.01em; }
+  .cp-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; font-size: .86rem; position: relative; z-index: 1; }
+  .cp-bottom b { display: block; font-size: 1rem; }
+  .cp-msg { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; color: var(--muted); font-style: italic; min-height: 52px; overflow-wrap: anywhere; }
+  .facts { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 6px; font-size: .9rem; color: var(--muted); }
+  .facts li::before { content: "✓"; color: var(--brand); font-weight: 700; margin-right: 8px; }
+
+  /* form */
+  form { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; gap: 18px; }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; min-width: 0; }
+  legend { font-weight: 700; padding: 0; margin-bottom: 10px; }
+  .chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; inset: 0; }
+  .chip span { display: grid; place-items: center; min-height: 48px; border: 1.5px solid var(--line); border-radius: 12px; font-weight: 700; cursor: pointer; background: var(--bg); transition: border-color .15s, background .15s; }
+  .chip input:checked + span { border-color: var(--brand); background: #e7efe9; color: var(--brand); }
+  .chip input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .designs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .designs .chip span { min-height: 56px; color: #fff; font-weight: 600; font-size: .88rem; border: 2px solid transparent; }
+  .designs .chip input:checked + span { border-color: var(--gold); color: #fff; box-shadow: 0 0 0 2px var(--surface) inset; }
+  label.f { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); }
+  label.f input, label.f textarea { font: 500 1rem 'DM Sans', sans-serif; color: var(--ink); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--bg); width: 100%; min-width: 0; }
+  label.f input:focus, label.f textarea:focus { outline: none; border-color: var(--brand); background: #fff; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .custom { display: none; }
+  .custom.show { display: grid; }
+  .buy { appearance: none; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font: 700 1.05rem 'DM Sans', sans-serif; padding: 16px 20px; cursor: pointer; width: 100%; }
+  .buy:hover { filter: brightness(1.1); }
+  .secure { text-align: center; color: var(--muted); font-size: .85rem; margin: -6px 0 0; }
+
+  /* demo dialog */
+  dialog { border: 0; border-radius: 18px; padding: 22px; max-width: 420px; width: calc(100% - 32px); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+  dialog::backdrop { background: rgba(23, 21, 15, .55); }
+  dialog h2 { font: 700 1.4rem 'Playfair Display', Georgia, serif; margin: 0 0 8px; }
+  dialog p { margin: 0 0 10px; color: var(--muted); }
+  dialog button { border: 0; border-radius: 999px; padding: 12px 18px; font: 700 1rem 'DM Sans', sans-serif; background: var(--ink); color: #fff; cursor: pointer; width: 100%; margin-top: 6px; }
+
+  /* pitch bar */
+  .offer-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: #121110; color: #fff; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; justify-content: center; gap: 8px 16px; flex-wrap: wrap; font-size: 14px; line-height: 1.35; box-shadow: 0 -8px 28px rgba(0,0,0,.28); }
+  .offer-bar .t { max-width: 620px; }
+  .offer-bar small { display: block; color: #c9c3b6; font-size: 12.5px; margin-top: 2px; }
+  .offer-bar a { background: #f0b239; color: #121110; text-decoration: none; font-weight: 700; padding: 10px 16px; border-radius: 999px; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .card-preview { transition: none; } }
+  body { padding-bottom: calc(var(--obh, 120px) + 24px); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Northline Barbers<small>Kanata · Est. 2014</small></div>
+    <nav>Gift cards</nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Give a fresh cut this Christmas</h1>
+    <p class="lede">Pick an amount, add a note, and we email the gift card straight to them. It works in the shop and for online booking.</p>
+  </section>
+
+  <div class="grid">
+    <div class="preview-col">
+      <div class="card-preview d-holiday" id="cardPreview" aria-live="polite">
+        <div class="cp-top">
+          <div class="cp-brand">Northline Barbers<small>Gift card</small></div>
+          <div class="cp-flake" id="cpIcon" aria-hidden="true">❄</div>
+        </div>
+        <div class="cp-amount" id="cpAmount">$50</div>
+        <div class="cp-bottom">
+          <div>For<b id="cpTo">Someone special</b></div>
+          <div style="text-align:right">From<b id="cpFrom">You</b></div>
+        </div>
+      </div>
+      <div class="cp-msg" id="cpMsg">Your message shows here.</div>
+      <ul class="facts">
+        <li>Emailed instantly, or on the date you pick</li>
+        <li>No expiry date and no fees for them</li>
+        <li>Works in the shop and on online booking</li>
+      </ul>
+    </div>
+
+    <form id="giftForm" novalidate>
+      <fieldset>
+        <legend>Amount</legend>
+        <div class="chips" role="radiogroup">
+          <label class="chip"><input type="radio" name="amt" value="25"><span>$25</span></label>
+          <label class="chip"><input type="radio" name="amt" value="50" checked><span>$50</span></label>
+          <label class="chip"><input type="radio" name="amt" value="100"><span>$100</span></label>
+          <label class="chip"><input type="radio" name="amt" value="custom"><span>Other</span></label>
+        </div>
+        <label class="f custom" id="customWrap" for="customAmt">Amount ($10 to $500)
+          <input id="customAmt" type="number" inputmode="numeric" min="10" max="500" step="5" placeholder="75">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Design</legend>
+        <div class="designs">
+          <label class="chip"><input type="radio" name="design" value="holiday" checked><span class="d-holiday">Holiday</span></label>
+          <label class="chip"><input type="radio" name="design" value="classic"><span class="d-classic">Classic</span></label>
+          <label class="chip"><input type="radio" name="design" value="birthday"><span class="d-birthday">Birthday</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Who it's for</legend>
+        <div class="two">
+          <label class="f" for="toName">Their name<input id="toName" type="text" maxlength="30" placeholder="Omar" autocomplete="off"></label>
+          <label class="f" for="toEmail">Their email<input id="toEmail" type="email" placeholder="omar@email.com" autocomplete="off"></label>
+        </div>
+        <label class="f" for="fromName">Your name<input id="fromName" type="text" maxlength="30" placeholder="Sara" autocomplete="off"></label>
+        <label class="f" for="msg">Message (optional)<textarea id="msg" rows="3" maxlength="160" placeholder="Merry Christmas! Treat yourself to a fresh fade."></textarea></label>
+        <label class="f" for="sendDate">Send it on<input id="sendDate" type="date"></label>
+      </fieldset>
+
+      <button class="buy" type="submit" id="buyBtn">Buy $50 gift card</button>
+      <p class="secure">Secure checkout by Square.</p>
+    </form>
+  </div>
+</main>
+
+<dialog id="demoNote" aria-labelledby="demoTitle">
+  <h2 id="demoTitle">This is an example</h2>
+  <p>On your real page, this button opens Square's secure checkout. The buyer pays, the gift card is emailed on the date they picked, and the money lands in your Square account.</p>
+  <p>You pay only the card fee on each sale. No monthly fee.</p>
+  <button type="button" id="closeNote">Got it</button>
+</dialog>
+
+<div class="offer-bar" role="region" aria-label="About this example">
+  <div class="t"><b>Example gift card page</b> built by Hussein, an Ottawa web developer.<small>Yours, with your name and designs, for $199. Live this week.</small></div>
+  <a href="sms:+13435975450?&amp;body=Yes%2C%20I%20want%20online%20gift%20cards%20for%20my%20business">Text me &ldquo;yes&rdquo;</a>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('giftForm');
+  var card = document.getElementById('cardPreview');
+  var icons = { holiday: '❄', classic: '✂', birthday: '★' };
+  var customWrap = document.getElementById('customWrap'), customAmt = document.getElementById('customAmt');
+  function amount() {
+    var r = form.querySelector('input[name="amt"]:checked').value;
+    if (r !== 'custom') return Number(r);
+    var v = Math.round(Number(customAmt.value));
+    return v >= 10 && v <= 500 ? v : 0;
+  }
+  function render() {
+    var amtRadio = form.querySelector('input[name="amt"]:checked').value;
+    customWrap.classList.toggle('show', amtRadio === 'custom');
+    var a = amount();
+    document.getElementById('cpAmount').textContent = a ? '$' + a : '$—';
+    document.getElementById('buyBtn').textContent = a ? 'Buy $' + a + ' gift card' : 'Pick an amount';
+    var d = form.querySelector('input[name="design"]:checked').value;
+    card.className = 'card-preview d-' + d;
+    document.getElementById('cpIcon').textContent = icons[d];
+    document.getElementById('cpTo').textContent = document.getElementById('toName').value.trim() || 'Someone special';
+    document.getElementById('cpFrom').textContent = document.getElementById('fromName').value.trim() || 'You';
+    var m = document.getElementById('msg').value.trim();
+    document.getElementById('cpMsg').textContent = m || 'Your message shows here.';
+  }
+  form.addEventListener('input', render);
+  form.addEventListener('change', render);
+  var today = new Date(); var iso = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  var sd = document.getElementById('sendDate'); sd.value = iso; sd.min = iso;
+  var dlg = document.getElementById('demoNote');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!amount()) { customAmt.focus(); return; }
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  });
+  document.getElementById('closeNote').addEventListener('click', function () { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); });
+  render();
+})();
+</script>
+<script>
+(function () {
+  function fit() {
+    var bar = document.querySelector('.offer-bar'); if (!bar) return;
+    document.documentElement.style.setProperty('--obh', bar.offsetHeight + 'px');
+  }
+  window.addEventListener('resize', fit); window.addEventListener('load', fit); fit();
+})();
+</script>
+</body>
+</html>

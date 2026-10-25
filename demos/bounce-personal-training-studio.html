@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bounce Personal Training Studio — Ottawa</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -760,7 +761,7 @@
     <p class="pitch-sub">
       I built this demo specifically for you — no charge, no obligation.<br>
       Every colour, every section, every feature is fully customisable.<br>
-      Tell me your vision and I'll bring it to life in 1–2 weeks.
+      Tell me your vision and I'll bring it to life in 7 days.
     </p>
     <div class="pitch-contacts">
       <a href="mailto:hussein.ottawaweb@gmail.com" class="pitch-contact-item"><span>📧</span>hussein.ottawaweb@gmail.com</a>
@@ -770,7 +771,7 @@
       Let's Build It Together <span class="pitch-arrow">→</span>
     </a>
     <p class="pitch-disclaimer">
-      Hussein · Ottawa Web Developer · Starting at $500 flat fee<br>
+      Hussein · Ottawa Web Developer · $650 · live in 7 days · online gift cards included<br>
       Reply to my email or call — I'd love to hear what you have in mind.
     </p>
   </div>
@@ -791,5 +792,24 @@
   const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
+<!-- OFFER-BAR:START -->
+<style>
+.offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;
+  font:500 14px/1.35 'DM Sans',system-ui,-apple-system,sans-serif;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;justify-content:center;gap:8px 16px;flex-wrap:wrap;box-shadow:0 -8px 28px rgba(0,0,0,.28);text-align:left}
+.offer-bar .ob-text{max-width:620px}
+.offer-bar b{font-weight:700}
+.offer-bar small{display:block;color:#c9c3b6;font-size:12.5px;margin-top:2px}
+.offer-bar .ob-actions{display:flex;gap:8px;flex-wrap:wrap}
+.offer-bar a{display:inline-block;background:#fff;color:#121110;text-decoration:none;font-weight:700;font-size:14px;
+  padding:10px 16px;border-radius:999px;white-space:nowrap}
+.offer-bar a.ob-pay{background:#f0b239}
+body{padding-bottom:calc(var(--obh,120px) + 8px)!important}
+html,body{overflow-x:hidden;overflow-x:clip}
+@media print{.offer-bar{display:none}}
+</style>
+<div class="offer-bar" role="region" aria-label="About this demo"><div class="ob-text"><b>Demo prepared for Bounce Personal Training Studio</b> by Hussein, an Ottawa web developer. Not the official website.<small>Yours for $650, live in 7 days, online gift cards included.</small></div><div class="ob-actions"><a href="sms:+13435975450?&amp;body=Yes%2C%20build%20the%20website%20for%20Bounce%20Personal%20Training%20Studio">Text me &ldquo;yes&rdquo;</a></div></div>
+<script>(function(){function f(){var b=document.querySelector('.offer-bar');if(b)document.documentElement.style.setProperty('--obh',b.offsetHeight+'px');}window.addEventListener('resize',f);window.addEventListener('load',f);f();})();</script>
+<!-- OFFER-BAR:END -->
 </body>
 </html>

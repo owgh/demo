@@ -15,6 +15,7 @@ import os
 from config import LEADS_CSV, DEMOS_DIR, TEMPLATES_DIR, GITHUB_USERNAME, GITHUB_PAGES_REPO
 from utils import make_slug, render_template, filter_leads, read_leads, build_tokens
 from ai_copy import get_ai_copy
+from offer_bar import patch as offer_patch
 
 
 TEMPLATE_FILE = os.path.join(TEMPLATES_DIR, "base.html")
@@ -36,7 +37,8 @@ def generate_demo(lead: dict, template: str) -> str:
     print("✓")
 
     tokens = build_tokens(lead, ai_copy)
-    return render_template(template, tokens)
+    # offer bar + noindex + current price (see offer_bar.py)
+    return offer_patch(render_template(template, tokens), name)
 
 
 def run(category_filter: str = None, lead_filter: str = None):
