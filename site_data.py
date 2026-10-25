@@ -835,6 +835,20 @@ ABOUT = {
 }
 
 
+def display_name(name):
+    """Name as people say it: drop SEO tails after ' | ' and fix ALL-CAPS names.
+    'THE CHIC NAIL LOUNGE | Ottawa's Luxury Beauty Club' -> 'The Chic Nail Lounge'."""
+    import string
+    n = (name or "").strip()
+    head = re.split(r"\s+\|\s+", n)[0].strip()
+    if len(head) >= 3:
+        n = head
+    letters = [c for c in n if c.isalpha()]
+    if len(letters) > 4 and all(c.isupper() for c in letters):
+        n = string.capwords(n.lower())
+    return n
+
+
 def city_from_address(address):
     """'1459 Ogilvie Rd Unit 3, Gloucester, ON K1J 7P3, Canada' -> 'Gloucester'."""
     parts = [p.strip() for p in (address or "").split(",") if p.strip()]
@@ -855,7 +869,8 @@ def config_for(category):
 
 def build_site(lead, slug, offer):
     """Everything the page needs, as one dict (serialized into the page as JSON)."""
-    name = lead.get("business_name", "").strip()
+    full = lead.get("business_name", "").strip()
+    name = display_name(full)
     category = (lead.get("category") or "").strip().lower()
     cfg = config_for(category)
     theme = cfg["theme"]
@@ -865,7 +880,7 @@ def build_site(lead, slug, offer):
     hours = [{"label": lbl, "days": d, "open": o, "close": c} for lbl, d, o, c in HOURS[theme]]
     site = {
         "v": 2,
-        "name": name, "slug": slug, "category": category or "business",
+        "name": name, "fullName": full, "slug": slug, "category": category or "business",
         "theme": theme, "hook": cfg["hook"], "noun": cfg.get("noun", "appointment"),
         "city": city,
         "address": (lead.get("address") or "").replace(", Canada", ""),

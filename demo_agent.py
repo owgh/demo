@@ -76,6 +76,7 @@ def generate_demo(lead: dict, template: str) -> str:
         "ASSET_V": ASSET_VERSION,
         "PRIMARY_STYLE": f'<style>html[data-theme]{{--primary:{site["primary"]}}}</style>' if site.get("primary") else "",
         "BUSINESS_NAME": esc(name),
+        "DISPLAY_NAME": esc(site["name"]),
         "HEADLINE": esc(site["headline"]),
         "SUB": esc(site["sub"]),
         "CTA": esc(site["cta"]),
