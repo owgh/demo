@@ -556,3 +556,10 @@ textarea.input { min-height: 84px; resize: vertical; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
 .amt-other { width: 110px; }
 .counter { font-size: .8rem; color: var(--muted); text-align: right; margin: -8px 0 12px; }
+
+/* ── Live sites: gallery and logo ───────────────────────────────────────── */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px; align-items: start; }
+.ph { margin: 0; border-radius: var(--r-sm); overflow: hidden; background: var(--bg2); }
+.ph img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.ph figcaption { padding: 10px 12px; font-size: .9rem; color: var(--muted); }
+.brand img { height: 40px; width: auto; display: inline-block; vertical-align: middle; margin-right: 10px; border-radius: 6px; }

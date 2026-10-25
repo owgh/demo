@@ -7,10 +7,11 @@
   <title>Peaky Barbers — Ottawa</title>
   <meta name="description" content="Peaky Barbers in Nepean. See today&#x27;s open times and book in three taps.">
   <meta name="theme-color" content="#122033">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&amp;family=Karla:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/v2/site.css?v=2.0.0">
+  <link rel="stylesheet" href="assets/v2/site.css?v=2.1.0">
   
 </head>
 <body>
@@ -61,6 +62,13 @@
     </div>
   </section>
 
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">Take a look inside</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
+    </div>
+  </section>
+
   <section class="sec gift" id="gift" aria-labelledby="gift-title">
     <div class="wrap gift-in">
       <div class="sec-head">
@@ -104,6 +112,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -119,12 +128,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">Peaky Barbers</p>
     <p>43 Roydon Pl Unit 5, Nepean, ON K2E 1A3<br><a href="tel:6132258008">(613) 225-8008</a></p>
-    <p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    
   </div>
 </footer>
 
@@ -141,7 +152,7 @@
 </dialog>
 
 <script type="application/json" id="site-data">{"v":2,"name":"Peaky Barbers","fullName":"Peaky Barbers","slug":"peaky-barbers","category":"barbershop","theme":"barber","hook":"booking","noun":"cut","city":"Nepean","address":"43 Roydon Pl Unit 5, Nepean, ON K2E 1A3","street":"43 Roydon Pl Unit 5","phone":"(613) 225-8008","phoneRaw":"6132258008","website":"http://peakybarbers.ca/","headline":"Pick your cut. Grab your chair.","sub":"Peaky Barbers in Nepean. See today's open times and book in three taps.","cta":"Book a cut","primary":null,"services":[{"name":"Haircut","desc":"Scissor or clipper cut, styled.","mins":30,"price":35},{"name":"Skin fade","desc":"Fade to the skin, sharp line-up.","mins":40,"price":40},{"name":"Cut and beard","desc":"Haircut plus beard shape and hot towel.","mins":45,"price":50},{"name":"Beard trim","desc":"Shape, line-up and hot towel.","mins":20,"price":22},{"name":"Kids' cut","desc":"Under 12.","mins":25,"price":25}],"hours":[{"label":"Mon–Fri","days":[1,2,3,4,5],"open":10,"close":19},{"label":"Saturday","days":[6],"open":9,"close":17},{"label":"Sunday","days":[0],"open":11,"close":16}],"faq":[{"q":"Do you take walk-ins?","a":"Yes, when a chair is free. Booking online guarantees your time."},{"q":"How long is a cut?","a":"About 30 minutes. Cut and beard together is about 45."},{"q":"Can I pick my barber?","a":"Yes. Choose a barber when you book, or take the first available."},{"q":"What if I'm running late?","a":"Text us. We'll hold your chair for 10 minutes."}],"about":"Peaky Barbers is a neighbourhood barbershop in Nepean. Good cuts, good conversation, and no long waits when you book ahead.","gift":{"amounts":[25,50,100,150]},"offer":{"price":650,"days":7},"staff":["First available","Marco","Dee","Sam"]}</script>
-<script src="assets/v2/site.js?v=2.0.0" defer></script>
+<script src="assets/v2/site.js?v=2.1.0" defer></script>
 <!-- OFFER-BAR:START -->
 <style>
 .offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;

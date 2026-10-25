@@ -7,10 +7,11 @@
   <title>16 Service Centre | Auto Repair Shop — Ottawa</title>
   <meta name="description" content="Honest car repair in Kars. Pick the job, choose your car, see a price range and book a bay.">
   <meta name="theme-color" content="#1c3fa8">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/v2/site.css?v=2.0.0">
+  <link rel="stylesheet" href="assets/v2/site.css?v=2.1.0">
   <style>html[data-theme]{--primary:#a61e1e}</style>
 </head>
 <body>
@@ -61,6 +62,13 @@
     </div>
   </section>
 
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">Our work</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
+    </div>
+  </section>
+
   <section class="sec gift" id="gift" aria-labelledby="gift-title">
     <div class="wrap gift-in">
       <div class="sec-head">
@@ -84,14 +92,14 @@
         <h2 class="h2" id="visit-title">Come and see us</h2>
         <address class="addr">1476 Century Rd E, Kars, ON K0A 2E0</address>
         <p class="visit-links">
-          <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=16+Service+Centre+|+Auto+Repair+Shop,+1476+Century+Rd+E,+Kars,+ON+K0A+2E0" target="_blank" rel="noopener">Get directions</a>
+          <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=16+Service+Centre,+1476+Century+Rd+E,+Kars,+ON+K0A+2E0" target="_blank" rel="noopener">Get directions</a>
           <a class="btn btn-ghost" href="tel:6136924472">Call (613) 692-4472</a>
         </p>
         <div data-mount="hours"></div>
       </div>
       <div class="map">
         <iframe title="Map showing 16 Service Centre" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=16+Service+Centre+|+Auto+Repair+Shop,+1476+Century+Rd+E,+Kars,+ON+K0A+2E0&amp;z=15&amp;output=embed"></iframe>
+          src="https://maps.google.com/maps?q=16+Service+Centre,+1476+Century+Rd+E,+Kars,+ON+K0A+2E0&amp;z=15&amp;output=embed"></iframe>
       </div>
     </div>
   </section>
@@ -104,6 +112,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -119,12 +128,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">16 Service Centre</p>
     <p>1476 Century Rd E, Kars, ON K0A 2E0<br><a href="tel:6136924472">(613) 692-4472</a></p>
-    <p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    
   </div>
 </footer>
 
@@ -141,7 +152,7 @@
 </dialog>
 
 <script type="application/json" id="site-data">{"v":2,"name":"16 Service Centre","fullName":"16 Service Centre | Auto Repair Shop","slug":"16-service-centre-auto-repair-shop","category":"auto repair","theme":"trades","hook":"estimate","noun":"appointment","city":"Kars","address":"1476 Century Rd E, Kars, ON K0A 2E0","street":"1476 Century Rd E","phone":"(613) 692-4472","phoneRaw":"6136924472","website":"http://www.16servicecentre.com/","headline":"Know the cost before you drive in.","sub":"Honest car repair in Kars. Pick the job, choose your car, see a price range and book a bay.","cta":"Get my estimate","primary":"#a61e1e","services":[{"name":"Oil change","desc":"Synthetic oil, filter and a 20-point check.","mins":30,"price":89},{"name":"Brake pads and rotors","desc":"Per axle, parts and labour.","mins":90,"price":420},{"name":"Winter tire swap","desc":"Swap, balance and torque.","mins":45,"price":80},{"name":"Diagnostics","desc":"Check engine light, noises and warning lights.","mins":60,"price":120}],"hours":[{"label":"Mon–Fri","days":[1,2,3,4,5],"open":7,"close":18},{"label":"Saturday","days":[6],"open":8,"close":14},{"label":"Sunday","days":[0],"open":null,"close":null}],"faq":[{"q":"Is the online price final?","a":"It's an estimate. We confirm the exact price on site before any work starts, and it won't change without your OK."},{"q":"Are you licensed and insured?","a":"Yes. We'll send proof of insurance with your quote."},{"q":"How soon can you come?","a":"Most jobs get a visit within a few days. Emergencies go to the front of the line."},{"q":"Do you clean up after?","a":"Always. We leave the space the way we found it, minus the problem."}],"about":"16 Service Centre serves Kars and the rest of Ottawa. We show up when we say we will, quote before we start, and clean up before we leave.","gift":{"amounts":[25,50,100,150]},"offer":{"price":650,"days":7},"jobs":[{"name":"Brakes (pads and rotors)","unit":"axles","min":1,"max":2,"step":1,"def":1,"base":60,"rate":360},{"name":"Tire swap","unit":"tires","min":4,"max":8,"step":4,"def":4,"base":20,"rate":15},{"name":"Oil change","unit":"litres","min":4,"max":8,"step":1,"def":5,"base":49,"rate":9},{"name":"Diagnostics","unit":"hours","min":1,"max":3,"step":1,"def":1,"base":0,"rate":120}],"urgency":[["Flexible",0.92],["Within a week",1.0],["Urgent (48 h)",1.35]]}</script>
-<script src="assets/v2/site.js?v=2.0.0" defer></script>
+<script src="assets/v2/site.js?v=2.1.0" defer></script>
 <!-- OFFER-BAR:START -->
 <style>
 .offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;

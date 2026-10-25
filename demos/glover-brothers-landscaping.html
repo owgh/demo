@@ -7,10 +7,11 @@
   <title>Glover Brothers Landscaping — Ottawa</title>
   <meta name="description" content="Lawn care, cleanups and garden work in Carp. Pick a job, slide the size, and see your price before anyone visits.">
   <meta name="theme-color" content="#1c3fa8">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/v2/site.css?v=2.0.0">
+  <link rel="stylesheet" href="assets/v2/site.css?v=2.1.0">
   <style>html[data-theme]{--primary:#1d6b3a}</style>
 </head>
 <body>
@@ -61,6 +62,13 @@
     </div>
   </section>
 
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">Our work</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
+    </div>
+  </section>
+
   <section class="sec gift" id="gift" aria-labelledby="gift-title">
     <div class="wrap gift-in">
       <div class="sec-head">
@@ -104,6 +112,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -119,12 +128,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">Glover Brothers Landscaping</p>
     <p>243 Westbrook Rd, Carp, ON K0A 1L0<br><a href="tel:6133167833">(613) 316-7833</a></p>
-    <p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    
   </div>
 </footer>
 
@@ -141,7 +152,7 @@
 </dialog>
 
 <script type="application/json" id="site-data">{"v":2,"name":"Glover Brothers Landscaping","fullName":"Glover Brothers Landscaping","slug":"glover-brothers-landscaping","category":"landscaping","theme":"trades","hook":"estimate","noun":"visit","city":"Carp","address":"243 Westbrook Rd, Carp, ON K0A 1L0","street":"243 Westbrook Rd","phone":"(613) 316-7833","phoneRaw":"6133167833","website":"http://www.gloverbrotherslandscaping.com/","headline":"Price your yard in ten seconds.","sub":"Lawn care, cleanups and garden work in Carp. Pick a job, slide the size, and see your price before anyone visits.","cta":"Get my estimate","primary":"#1d6b3a","services":[{"name":"Weekly lawn care","desc":"Mow, trim and edge, every week of the season.","mins":45,"price":45},{"name":"Fall cleanup","desc":"Leaves, beds cut back and gutters cleared.","mins":180,"price":295},{"name":"Garden bed refresh","desc":"Weed, edge and fresh mulch.","mins":240,"price":380},{"name":"Sod installation","desc":"New lawn, laid and rolled.","mins":480,"price":1200}],"hours":[{"label":"Mon–Fri","days":[1,2,3,4,5],"open":7,"close":18},{"label":"Saturday","days":[6],"open":8,"close":14},{"label":"Sunday","days":[0],"open":null,"close":null}],"faq":[{"q":"Is the online price final?","a":"It's an estimate. We confirm the exact price on site before any work starts, and it won't change without your OK."},{"q":"Are you licensed and insured?","a":"Yes. We'll send proof of insurance with your quote."},{"q":"How soon can you come?","a":"Most jobs get a visit within a few days. Emergencies go to the front of the line."},{"q":"Do you clean up after?","a":"Always. We leave the space the way we found it, minus the problem."}],"about":"Glover Brothers Landscaping serves Carp and the rest of Ottawa. We show up when we say we will, quote before we start, and clean up before we leave.","gift":{"amounts":[25,50,100,150]},"offer":{"price":650,"days":7},"jobs":[{"name":"Fall cleanup","unit":"sq ft of yard","min":1000,"max":12000,"step":250,"def":4000,"base":120,"rate":0.045},{"name":"Lawn mowing (per visit)","unit":"sq ft of lawn","min":1000,"max":15000,"step":250,"def":5000,"base":30,"rate":0.004},{"name":"Mulch and garden beds","unit":"sq ft of beds","min":50,"max":1500,"step":25,"def":300,"base":90,"rate":1.6},{"name":"New sod","unit":"sq ft","min":100,"max":5000,"step":50,"def":800,"base":250,"rate":2.1}],"urgency":[["Flexible",0.92],["Within a week",1.0],["Urgent (48 h)",1.35]]}</script>
-<script src="assets/v2/site.js?v=2.0.0" defer></script>
+<script src="assets/v2/site.js?v=2.1.0" defer></script>
 <!-- OFFER-BAR:START -->
 <style>
 .offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;

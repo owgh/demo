@@ -7,10 +7,11 @@
   <title>Sandy&#x27;s Flowers &amp; More — Ottawa</title>
   <meta name="description" content="Fresh flowers from Sandy&#x27;s Flowers &amp; More in Ottawa. Pick your stems, choose the wrap, and send it today.">
   <meta name="theme-color" content="#fbf0ee">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gloock&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/v2/site.css?v=2.0.0">
+  <link rel="stylesheet" href="assets/v2/site.css?v=2.1.0">
   
 </head>
 <body>
@@ -61,6 +62,13 @@
     </div>
   </section>
 
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">Recent arrangements</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
+    </div>
+  </section>
+
   <section class="sec gift" id="gift" aria-labelledby="gift-title">
     <div class="wrap gift-in">
       <div class="sec-head">
@@ -104,6 +112,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -119,12 +128,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">Sandy&#x27;s Flowers &amp; More</p>
     <p>675 Bronson Ave, Ottawa, ON K1S 5W7<br><a href="tel:6134136510">(613) 413-6510</a></p>
-    <p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    
   </div>
 </footer>
 
@@ -141,7 +152,7 @@
 </dialog>
 
 <script type="application/json" id="site-data">{"v":2,"name":"Sandy's Flowers & More","fullName":"Sandy's Flowers & More","slug":"sandy-s-flowers-more","category":"florist","theme":"florist","hook":"bouquet","noun":"order","city":"Ottawa","address":"675 Bronson Ave, Ottawa, ON K1S 5W7","street":"675 Bronson Ave","phone":"(613) 413-6510","phoneRaw":"6134136510","website":"http://www.sandysflowersandmore.com/","headline":"Build a bouquet. We'll deliver it.","sub":"Fresh flowers from Sandy's Flowers & More in Ottawa. Pick your stems, choose the wrap, and send it today.","cta":"Build a bouquet","primary":null,"services":[{"name":"Same-day bouquet","desc":"Designer's choice, delivered today.","mins":0,"price":65},{"name":"Sympathy flowers","desc":"Arrangements and wreaths.","mins":0,"price":95},{"name":"Weekly flowers","desc":"For offices and restaurants.","mins":0,"price":55},{"name":"Wedding consultation","desc":"Bouquets, centrepieces and arches.","mins":45,"price":0}],"hours":[{"label":"Mon–Fri","days":[1,2,3,4,5],"open":9,"close":18},{"label":"Saturday","days":[6],"open":9,"close":17},{"label":"Sunday","days":[0],"open":10,"close":15}],"faq":[{"q":"Do you deliver the same day?","a":"Yes, for orders placed before 1 pm, Monday to Saturday."},{"q":"Can I add a card?","a":"Yes. Write your message when you order and we'll handwrite it."},{"q":"Where do you deliver?","a":"Across Ottawa. Delivery is free over $75."},{"q":"Do you do weddings and events?","a":"Yes. Book a free consultation and bring your ideas."}],"about":"Sandy's Flowers & More makes flowers by hand in Ottawa, for birthdays, apologies, thank-yous and every day in between.","gift":{"amounts":[25,50,100,150]},"offer":{"price":650,"days":7}}</script>
-<script src="assets/v2/site.js?v=2.0.0" defer></script>
+<script src="assets/v2/site.js?v=2.1.0" defer></script>
 <!-- OFFER-BAR:START -->
 <style>
 .offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;

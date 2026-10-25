@@ -10,6 +10,18 @@
 
   /* ── Helpers ─────────────────────────────────────────────────────────── */
   var NS = 'http://www.w3.org/2000/svg';
+  var LIVE = !!S.live, LINKS = S.links || {};
+  function demoText(demo, live) { return LIVE ? (live || null) : demo; }
+  function send(kind, fields) {
+    if (!LIVE || !S.form) return Promise.resolve();
+    var body = { _subject: kind + ' from your website', _template: 'table' };
+    Object.keys(fields).forEach(function (k) { if (fields[k] != null && fields[k] !== '') body[k] = String(fields[k]); });
+    return fetch(S.form, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json().catch(function () { return {}; }); })
+      .then(function (res) { if (res && (res.success === false || res.success === 'false')) throw new Error(res.message || 'Not sent'); });
+  }
+  function sendFail() { return 'That didn\u2019t go through. Please call us' + (S.phone ? ' at ' + S.phone : '') + '.'; }
+  function openLink(url) { window.open(url, '_blank', 'noopener'); }
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
   function build(el, props, kids) {
@@ -64,6 +76,7 @@
     if (sameDay(d, tmr)) return 'Tomorrow';
     return DOW[d.getDay()] + ' ' + MON[d.getMonth()] + ' ' + d.getDate();
   }
+  function longDay(d) { return DOW_LONG[d.getDay()] + ', ' + MON_LONG[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); }
   function nextDays(n) {
     var out = [], t = new Date(); t.setHours(0, 0, 0, 0);
     for (var i = 0; i < n; i++) { var d = new Date(t); d.setDate(t.getDate() + i); out.push(d); }
@@ -79,7 +92,7 @@
     var now = new Date(), cut = sameDay(d, now) ? now.getHours() * 60 + now.getMinutes() + 60 : -1;
     for (var t = open; t + len <= close; t += 30) {
       if (t < cut) continue;
-      if (rand(dayKey(d) + ':' + t) < 0.42) continue;
+      if (!LIVE && rand(dayKey(d) + ':' + t) < 0.42) continue;
       out.push(t);
     }
     return out;
@@ -103,7 +116,7 @@
     return h('div', { class: 'card-head' }, h('p', { class: 'card-title' }, title), note ? h('p', { class: 'card-note' }, note) : null);
   }
   function stepLbl(n, text) { return h('p', { class: 'step-lbl' }, h('span', { class: 'n', 'aria-hidden': 'true' }, n), text); }
-  function ownerNote(text) { return h('p', { class: 'owner-note' }, text); }
+  function ownerNote(text) { return LIVE ? null : h('p', { class: 'owner-note' }, text); }
   function tickIcon() {
     return h('span', { class: 'tick', 'aria-hidden': 'true' },
       s('svg', { viewBox: '0 0 24 24' }, s('path', { d: 'M5 12.5l4.5 4.5L19 7.5', fill: 'none', stroke: 'currentColor', 'stroke-width': '2.6', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })));
@@ -157,7 +170,7 @@
     function render(focusSel) {
       var strip = $('.days', mount); if (strip) dayScroll = strip.scrollLeft;
       mount.replaceChildren();
-      if (opts.title) mount.appendChild(cardHead(opts.title, opts.note === undefined ? 'Sample services and prices' : null));
+      if (opts.title) mount.appendChild(cardHead(opts.title, opts.note === undefined ? demoText('Sample services and prices', 'Pick a time that suits you') : null));
       if (st.done) { mount.appendChild(done()); shown = 0; return; }
       var blocks = [], n = 0;
       if (needPet) { blocks.push([stepLbl(++n, 'Who is coming in?'), pets()]); }
@@ -219,12 +232,16 @@
         e.preventDefault();
         if (!st.name.trim()) { st.err = 'Add your name so we know who to expect.'; return render('#bk-name'); }
         if (st.phone.replace(/\D/g, '').length < 10) { st.err = 'Add a 10-digit phone number so we can confirm.'; return render('#bk-phone'); }
-        st.err = ''; st.done = true; render();
+        st.err = '';
+        if (!LIVE) { st.done = true; return render(); }
+        st.sending = true; render();
+        send(opts.kind || 'Booking request', { Service: x.name, Details: x.desc || '', With: S.staff ? st.staff : '', Pet: st.pet || '', Day: longDay(st.day), Time: fmtTime(st.time), Name: st.name, Phone: st.phone })
+          .then(function () { st.sending = false; st.done = true; render(); }, function () { st.sending = false; st.err = sendFail(); render(); });
       } },
         h('div', { class: 'field' }, h('label', { for: 'bk-name' }, 'Name'), name),
         h('div', { class: 'field' }, h('label', { for: 'bk-phone' }, 'Mobile number'), phone),
         st.err ? h('p', { class: 'err', role: 'alert' }, st.err) : null,
-        h('button', { class: 'btn btn-primary btn-block', type: 'submit' }, 'Book ' + fmtDay(st.day) + ' at ' + fmtTime(st.time)),
+        h('button', { class: 'btn btn-primary btn-block', type: 'submit', disabled: !!st.sending }, st.sending ? 'Sending\u2026' : (LIVE ? 'Request ' : 'Book ') + fmtDay(st.day) + ' at ' + fmtTime(st.time)),
         h('p', { class: 'foot-note' }, x.name + (x.mins ? ', ' + minsLabel(x.mins) : '') + (x.price ? ', ' + priceLabel(x.price) : '')));
     }
     function done() {
@@ -237,7 +254,7 @@
         h('dt', null, 'Where'), h('dd', null, S.street + ', ' + S.city));
       return h('div', { class: 'enter' },
         h('div', { class: 'ticket' },
-          h('div', { class: 'ticket-top' }, tickIcon(), h('div', null, h('h3', null, opts.doneTitle || 'You’re booked, ' + firstName(st.name)), h('p', { class: 'card-note' }, 'A confirmation text goes to ' + st.phone + '.'))),
+          h('div', { class: 'ticket-top' }, tickIcon(), h('div', null, h('h3', null, opts.doneTitle || (LIVE ? 'Request sent, ' : 'You’re booked, ') + firstName(st.name)), h('p', { class: 'card-note' }, LIVE ? 'We’ll text ' + st.phone + ' to confirm your time.' : 'A confirmation text goes to ' + st.phone + '.'))),
           dl),
         h('div', { class: 'row-actions' },
           h('button', { class: 'btn btn-primary', type: 'button', onclick: function () { downloadICS(x.name, st.day, st.time, x.mins); } }, 'Add to calendar'),
@@ -250,6 +267,7 @@
 
   function openBooking(opts) {
     opts = opts || {};
+    if (LIVE && LINKS.booking && !opts.services) return openLink(LINKS.booking);
     openSheet(opts.sheetTitle || S.cta, function (m) { Booking(m, opts); });
   }
 
@@ -257,6 +275,12 @@
   var HOOKS = {};
 
   HOOKS.booking = function (m) {
+    if (LIVE && LINKS.booking) {
+      add(m, cardHead('Book at ' + S.name, 'See live availability'),
+        h('div', { class: 'bk-svcs' }, S.services.map(function (x) { return h('div', { class: 'bk-svc' }, h('b', null, x.name), h('span', { class: 'p' }, priceLabel(x.price)), h('small', null, minsLabel(x.mins) || x.desc || '')); })),
+        h('a', { class: 'btn btn-primary btn-block', href: LINKS.booking, target: '_blank', rel: 'noopener', style: 'margin-top:14px' }, 'See open times and book'));
+      return;
+    }
     Booking(m, { title: 'Book at ' + S.name });
   };
 
@@ -351,14 +375,14 @@
     S.urgency.forEach(function (u, i) {
       seg.appendChild(radio(h('button', { type: 'button', onclick: function () { st.urg = i; $$('button', seg).forEach(function (b, k) { b.setAttribute('aria-checked', k === i ? 'true' : 'false'); }); calc(); } }, u[0]), i === st.urg));
     });
-    add(m, cardHead('Instant estimate', 'Sample prices. You set your own.'),
+    add(m, cardHead('Instant estimate', demoText('Sample prices. You set your own.', 'Estimate only. We confirm on site.')),
       h('p', { class: 'lbl', style: 'margin:0 0 10px' }, 'What do you need?'), jobsEl,
       h('div', { class: 'size-val', style: 'margin-top:18px' }, sizeLbl, sizeOut), range,
       h('p', { class: 'lbl', style: 'margin:10px 0 8px' }, 'When?'), seg,
       h('div', { class: 'est-out' }, h('span', { class: 'lbl' }, 'Your estimate'), big, desc),
       h('button', { type: 'button', class: 'btn btn-primary btn-block', style: 'margin-top:14px', onclick: function () {
         var j = S.jobs[st.job];
-        openBooking({ sheetTitle: 'Book a free estimate visit', lockSvc: true, services: [{ name: j.name + ', ' + unitText(st.size, j.unit), mins: 30, price: 0, desc: big.textContent }] });
+        openBooking({ sheetTitle: 'Book a free estimate visit', kind: 'Estimate visit request', lockSvc: true, services: [{ name: j.name + ', ' + unitText(st.size, j.unit), mins: 30, price: 0, desc: big.textContent }] });
       } }, 'Book a free visit to confirm'));
     syncJob();
   };
@@ -419,7 +443,10 @@
           e.preventDefault();
           if (!st.name.trim()) { st.err = 'Add your name for the pickup shelf.'; return render('#o-name'); }
           if (st.phone.replace(/\D/g, '').length < 10) { st.err = 'Add a 10-digit phone number so we can text you.'; return render('#o-phone'); }
-          placed(opts[st.pick], sub + tax);
+          if (!LIVE) return placed(opts[st.pick], sub + tax);
+          var o = opts[st.pick]; st.sending = true; st.err = ''; render();
+          send('Pickup order', { Items: keys.map(function (k) { return cart[k] + ' x ' + itemOf(k).name; }).join(', '), Total: money(sub + tax, 2) + ' (pay at pickup)', Pickup: longDay(o.day) + ' at ' + fmtTime(o.time), Name: st.name, Phone: st.phone })
+            .then(function () { placed(o, sub + tax); }, function () { st.sending = false; st.err = sendFail(); render(); });
         } },
           h('p', { class: 'step-lbl' }, 'Pickup time'),
           opts.length ? h('div', { class: 'chips', role: 'radiogroup', 'aria-label': 'Pickup time' }, opts.map(function (o, i) {
@@ -429,7 +456,8 @@
             h('div', { class: 'field' }, h('label', { for: 'o-name' }, 'Name'), h('input', { class: 'input', id: 'o-name', autocomplete: 'name', value: st.name, oninput: function (e) { st.name = e.target.value; } })),
             h('div', { class: 'field' }, h('label', { for: 'o-phone' }, 'Mobile'), h('input', { class: 'input', id: 'o-phone', type: 'tel', autocomplete: 'tel', value: st.phone, oninput: function (e) { st.phone = e.target.value; } }))),
           st.err ? h('p', { class: 'err', role: 'alert' }, st.err) : null,
-          h('button', { class: 'btn btn-primary btn-block', type: 'submit', disabled: !opts.length }, 'Place order, ' + money(sub + tax, 2)));
+          h('button', { class: 'btn btn-primary btn-block', type: 'submit', disabled: !opts.length || !!st.sending }, st.sending ? 'Sending\u2026' : 'Place order, ' + money(sub + tax, 2)),
+          LIVE ? h('p', { class: 'foot-note' }, 'You pay when you pick up.') : null);
         add(m, lines,
           h('div', { class: 'ord-sum' }, h('span', null, 'Subtotal'), h('span', null, money(sub, 2))),
           h('div', { class: 'ord-sum', style: 'border:0;margin-top:4px;padding-top:0' }, h('span', null, 'HST (13%)'), h('span', null, money(tax, 2))),
@@ -439,13 +467,15 @@
       }
       function placed(o, total) {
         var no = 100 + Math.floor(Math.random() * 800);
-        var steps = [['Order received', 'Order #' + no + ', ' + money(total, 2)], ['In the kitchen', 'We’re making it now'], ['Ready for pickup', fmtDay(o.day) + ' at ' + fmtTime(o.time)]];
+        var steps = LIVE
+          ? [['Order sent', money(total, 2) + ', pay at pickup'], ['Confirmed by text', 'We’ll text you shortly'], ['Ready for pickup', fmtDay(o.day) + ' at ' + fmtTime(o.time)]]
+          : [['Order received', 'Order #' + no + ', ' + money(total, 2)], ['In the kitchen', 'We’re making it now'], ['Ready for pickup', fmtDay(o.day) + ' at ' + fmtTime(o.time)]];
         var track = h('ol', { class: 'track' }, steps.map(function (x, i) { return h('li', { class: i === 0 ? 'done' : null }, h('div', null, h('b', null, x[0]), x[1])); }));
         sheetTitle.textContent = 'Thanks, ' + firstName(st.name);
         m.replaceChildren(h('div', { class: 'enter' },
-          h('div', { class: 'ticket' }, h('div', { class: 'ticket-top' }, tickIcon(), h('div', null, h('h3', null, 'Order #' + no + ' is in'), h('p', { class: 'card-note' }, 'We’ll text ' + st.phone + ' when it’s ready.'))), track),
+          h('div', { class: 'ticket' }, h('div', { class: 'ticket-top' }, tickIcon(), h('div', null, h('h3', null, LIVE ? 'Your order is in' : 'Order #' + no + ' is in'), h('p', { class: 'card-note' }, 'We’ll text ' + st.phone + (LIVE ? ' to confirm.' : ' when it’s ready.')))), track),
           ownerNote('On your real site, orders come straight to you and customers can pay online.')));
-        setTimeout(function () { var li = $$('li', track)[1]; if (li) li.classList.add('done'); }, 1600);
+        if (!LIVE) setTimeout(function () { var li = $$('li', track)[1]; if (li) li.classList.add('done'); }, 1600);
         Object.keys(cart).forEach(function (k) { cart[k] = 0; });
         notify();
       }
@@ -454,6 +484,13 @@
   }
   HOOKS.order = function (m) {
     var pop = (S.popular || []).map(function (p) { return p[0] + '|' + p[1]; });
+    if (LIVE && LINKS.order) {
+      add(m, cardHead('Order for pickup', 'Ready in about 20 min'), h('p', { class: 'lbl', style: 'margin:0' }, 'Popular right now'),
+        h('div', { class: 'ord-items' }, pop.map(function (k) { var it = itemOf(k); return h('div', { class: 'ord-item' }, h('div', null, h('b', null, it.name), it.desc ? [h('br'), h('small', null, it.desc)] : null), h('span', { class: 'price' }, money(it.price, 2))); })),
+        h('a', { class: 'btn btn-primary btn-block', href: LINKS.order, target: '_blank', rel: 'noopener', style: 'margin-top:16px' }, 'Order online'),
+        h('p', { class: 'foot-note' }, h('a', { href: '#services' }, 'See the full menu')));
+      return;
+    }
     var list = h('div', { class: 'ord-items' }, pop.map(function (k) {
       var it = itemOf(k);
       return h('div', { class: 'ord-item' }, h('div', null, h('b', null, it.name), it.desc ? [h('br'), h('small', null, it.desc)] : null),
@@ -466,7 +503,7 @@
         h('button', { type: 'button', class: 'btn btn-primary', disabled: !c, onclick: checkout }, 'Checkout'));
     });
     add(m, cardHead('Order for pickup', 'Ready in about 20 min'), h('p', { class: 'lbl', style: 'margin:0' }, 'Popular right now'), list, sum,
-      h('p', { class: 'foot-note' }, h('a', { href: '#services' }, 'See the full menu'), '. Sample menu and prices.'));
+      h('p', { class: 'foot-note' }, h('a', { href: '#services' }, 'See the full menu'), demoText('. Sample menu and prices.', '.')));
     var fab = h('button', { type: 'button', class: 'cart-fab', onclick: checkout, 'aria-label': 'View order' });
     document.body.appendChild(fab);
     onCart(fab, function () {
@@ -485,11 +522,12 @@
       }));
       grid.replaceChildren.apply(grid, S.menu[cur].map(function (it, i) {
         return h('div', { class: 'menu-item enter' }, h('div', null, h('h3', null, it.name, it.veg ? h('span', { class: 'veg', title: 'Vegetarian' }, 'V') : null), it.desc ? h('p', null, it.desc) : null),
-          h('div', { class: 'right' }, h('span', { class: 'svc-price' }, money(it.price, 2)), addCtl(cur + '|' + i)));
+          h('div', { class: 'right' }, h('span', { class: 'svc-price' }, money(it.price, 2)), LIVE && LINKS.order ? null : addCtl(cur + '|' + i)));
       }));
     }
     draw();
-    add(mount, tabs, grid, h('p', { class: 'svc-note' }, 'Sample menu and prices. Yours go here, with photos.'));
+    add(mount, tabs, grid, LIVE && LINKS.order ? h('a', { class: 'btn btn-primary', href: LINKS.order, target: '_blank', rel: 'noopener', style: 'margin-top:20px' }, 'Order online') : null,
+      demoText('x', null) ? h('p', { class: 'svc-note' }, 'Sample menu and prices. Yours go here, with photos.') : null);
   }
 
   // Mortgage calculator (Canadian: semi-annual compounding, CMHC premiums)
@@ -506,7 +544,7 @@
     var detail = h('p', { class: 'card-note' }), bar = h('div', { class: 'split', 'aria-hidden': 'true' }, h('i'), h('i')), legend = h('div', { class: 'legend' }), warn = h('div');
     var rPrice = row('m-price', 'Home price', 200000, 1500000, 5000, st.price, function (v) { return money(v); }, function (v) { st.price = v; });
     var rDown = row('m-down', 'Down payment', 5, 35, 1, st.down, function (v) { return v + '% (' + money(Math.round(st.price * v / 100)) + ')'; }, function (v) { st.down = v; });
-    var rRate = row('m-rate', 'Interest rate (sample)', 2, 8, 0.05, st.rate, function (v) { return v.toFixed(2) + '%'; }, function (v) { st.rate = v; });
+    var rRate = row('m-rate', LIVE ? 'Interest rate' : 'Interest rate (sample)', 2, 8, 0.05, st.rate, function (v) { return v.toFixed(2) + '%'; }, function (v) { st.rate = v; });
     var seg = h('div', { class: 'seg', role: 'radiogroup', 'aria-label': 'Amortization' }, [25, 30].map(function (y) {
       return radio(h('button', { type: 'button', onclick: function () { st.years = y; $$('button', seg).forEach(function (b) { b.setAttribute('aria-checked', b.textContent.indexOf(String(y)) === 0 ? 'true' : 'false'); }); calc(); } }, y + ' years'), y === st.years);
     }));
@@ -527,7 +565,7 @@
       legend.replaceChildren(h('span', null, 'Borrowed ' + money(Math.round(loan))), h('span', null, 'Interest ' + money(Math.round(interest))));
       warn.replaceChildren.apply(warn, notes.map(function (t) { return h('p', { class: 'warn' }, t); }));
     }
-    add(m, cardHead('Monthly payment', 'Sample rate. Not a quote.'), rPrice.el, rDown.el, rRate.el,
+    add(m, cardHead('Monthly payment', demoText('Sample rate. Not a quote.', 'Estimate only. Not a mortgage offer.')), rPrice.el, rDown.el, rRate.el,
       h('p', { class: 'lbl', style: 'margin:4px 0 8px' }, 'Amortization'), seg,
       h('div', { class: 'pay' }, h('div', null, big, detail)), bar, legend, warn,
       h('button', { type: 'button', class: 'btn btn-primary btn-block', style: 'margin-top:16px', onclick: function () { openBooking({ svc: 0, sheetTitle: S.cta }); } }, 'Book a free call to beat this rate'));
@@ -583,7 +621,11 @@
             e.preventDefault();
             if (!st.name.trim()) { st.err = 'Add your name so we know who we’re calling.'; return render('#i-name'); }
             if (st.phone.replace(/\D/g, '').length < 10) { st.err = 'Add a 10-digit phone number.'; return render('#i-phone'); }
-            st.err = ''; st.step = 3; render();
+            st.err = '';
+            if (!LIVE) { st.step = 3; return render(); }
+            st.sending = true; render();
+            send('Consultation request', { About: st.matter, Timing: st.when, 'Best time to call': st.best, Name: st.name, Phone: st.phone })
+              .then(function () { st.sending = false; st.step = 3; render(); }, function () { st.sending = false; st.err = sendFail(); render(); });
           } },
             h('div', { class: 'field' }, h('label', { for: 'i-name' }, 'Name'), h('input', { class: 'input', id: 'i-name', autocomplete: 'name', value: st.name, oninput: function (e) { st.name = e.target.value; } })),
             h('div', { class: 'field' }, h('label', { for: 'i-phone' }, 'Phone'), h('input', { class: 'input', id: 'i-phone', type: 'tel', autocomplete: 'tel', value: st.phone, oninput: function (e) { st.phone = e.target.value; } })),
@@ -592,7 +634,7 @@
               return radio(h('button', { type: 'button', class: 'chip', onclick: function () { st.best = x; render(); } }, x), st.best === x);
             })),
             st.err ? h('p', { class: 'err', role: 'alert' }, st.err) : null,
-            h('button', { type: 'submit', class: 'btn btn-primary btn-block' }, 'Request my free call')),
+            h('button', { type: 'submit', class: 'btn btn-primary btn-block', disabled: !!st.sending }, st.sending ? 'Sending\u2026' : 'Request my free call')),
           h('button', { type: 'button', class: 'link-btn back', onclick: function () { st.step = 1; render(); } }, 'Back'));
       } else {
         add(body, h('div', { class: 'ticket' },
@@ -629,7 +671,7 @@
           add(plan, h('span', { class: 'card-note' }, later ? 'Short waitlist' : 'Spots open'), h('h3', null, r[0]), h('p', { style: 'margin:0' }, r[1]),
             h('ul', null, h('li', null, ans[1] + ' a week'), h('li', null, (later ? 'Next opening: ' : 'Available from ') + MON_LONG[start.getMonth()] + ' ' + start.getFullYear())));
           add(body, plan, h('button', { type: 'button', class: 'btn btn-primary btn-block', style: 'margin-top:16px', onclick: function () {
-            openBooking({ sheetTitle: 'Book a visit', lockSvc: true, services: [{ name: 'Visit and tour: ' + r[0], mins: 30, price: 0 }] });
+            openBooking({ sheetTitle: 'Book a visit', kind: 'Visit request', lockSvc: true, services: [{ name: 'Visit and tour: ' + r[0], mins: 30, price: 0 }] });
           } }, 'Book a visit'));
         } else {
           add(plan, h('span', { class: 'card-note' }, 'Your plan'), h('h3', null, r[0]), h('p', { style: 'margin:0' }, r[1]),
@@ -637,7 +679,7 @@
               Q.price ? h('li', null, money(Q.price) + ' per ' + Q.unit) : null));
           var free = S.services.filter(function (x) { return x.price === 0 && /free/i.test(x.name); })[0];
           add(body, plan, h('button', { type: 'button', class: 'btn btn-primary btn-block', style: 'margin-top:16px', onclick: function () {
-            openBooking({ sheetTitle: 'Book your first ' + S.noun, lockSvc: true, services: [free ? { name: free.name + ': ' + r[0], mins: free.mins || 60, price: 0 } : { name: 'First ' + S.noun + ': ' + r[0], mins: 60, price: Q.price }] });
+            openBooking({ sheetTitle: 'Book your first ' + S.noun, kind: 'First ' + S.noun + ' request', lockSvc: true, services: [free ? { name: free.name + ': ' + r[0], mins: free.mins || 60, price: 0 } : { name: 'First ' + S.noun + ': ' + r[0], mins: 60, price: Q.price }] });
           } }, free ? 'Book my free first ' + S.noun : 'Book my first ' + S.noun));
         }
         add(body, h('button', { type: 'button', class: 'link-btn back', onclick: function () { ans = []; render(); } }, 'Start again'));
@@ -652,6 +694,7 @@
     var POOL = S.theme === 'kids' ? [960, 1020, 1080, 1140] : S.theme === 'gym' ? [390, 720, 1050, 1140] : [420, 570, 720, 1065, 1155];
     var days = nextDays(7), cur = 0, filter = 'All';
     function classesOn(d) {
+      if (S.schedule) return S.schedule.filter(function (c) { return c.day === d.getDay(); }).map(function (c) { return { t: c.t, name: c.name, level: c.level || 'All levels', spots: null }; }).sort(function (a, b) { return a.t - b.t; });
       var hrs = hoursOn(d);
       if (!hrs && S.theme !== 'kids') return [];
       if (S.theme === 'kids' && (d.getDay() === 0)) return [];
@@ -673,12 +716,12 @@
       var cls = classesOn(days[cur]).filter(function (c) { return filter === 'All' || c.name === filter; });
       listEl.replaceChildren.apply(listEl, cls.length ? cls.map(function (c) {
         var full = c.spots === 0;
-        return h('div', { class: 'cls enter' }, h('time', null, fmtTime(c.t)), h('div', null, h('b', null, c.name), h('small', { class: c.spots && c.spots < 4 ? 'spots-low' : null }, c.level + ', ' + (full ? 'full' : c.spots + (c.spots === 1 ? ' spot left' : ' spots left')))),
+        return h('div', { class: 'cls enter' }, h('time', null, fmtTime(c.t)), h('div', null, h('b', null, c.name), h('small', { class: c.spots && c.spots < 4 ? 'spots-low' : null }, c.spots == null ? c.level : c.level + ', ' + (full ? 'full' : c.spots + (c.spots === 1 ? ' spot left' : ' spots left')))),
           h('button', { type: 'button', class: 'btn ' + (full ? 'btn-ghost' : 'btn-primary'), onclick: function () { reserve(c, days[cur], full); } }, full ? 'Waitlist' : 'Reserve'));
       }) : [h('p', { class: 'card-note', style: 'padding:20px 0' }, 'No ' + (filter === 'All' ? '' : filter + ' ') + 'classes on ' + DOW_LONG[days[cur].getDay()] + '. Try another day.')]);
     }
     function reserve(c, d, full) {
-      openBooking({ sheetTitle: full ? 'Join the waitlist' : 'Reserve your spot', lockSvc: true, services: [{ name: c.name + ' (' + c.level.toLowerCase() + ')', mins: 60, price: 0 }], day: d, time: c.t,
+      openBooking({ sheetTitle: full ? 'Join the waitlist' : 'Reserve your spot', kind: full ? 'Waitlist request' : 'Class reservation', lockSvc: true, services: [{ name: c.name + ' (' + c.level.toLowerCase() + ')', mins: 60, price: 0 }], day: d, time: c.t,
         doneTitle: full ? 'You’re on the waitlist' : 'Your spot is saved' });
     }
     draw();
@@ -746,12 +789,12 @@
       return radio(h('button', { type: 'button', class: 'swatch', style: 'background:' + w[1], 'aria-label': w[0] + ' wrap', onclick: function () { wrap = i; $$('.swatch', wraps).forEach(function (b, k) { b.setAttribute('aria-checked', k === i ? 'true' : 'false'); }); draw(); } }), i === wrap);
     }));
     draw();
-    add(m, cardHead('Build your bouquet', 'Sample prices'), h('div', { class: 'bq' }, stage, h('div', null, stems, wraps)),
+    add(m, cardHead('Build your bouquet', demoText('Sample prices', null)), h('div', { class: 'bq' }, stage, h('div', null, stems, wraps)),
       h('div', { class: 'ord-sum' }, h('div', null, total, h('br'), countEl),
         h('button', { type: 'button', class: 'btn btn-primary', onclick: function () {
           var n = FL.reduce(function (a, f) { return a + f.k; }, 0);
           if (!n) return;
-          openBooking({ sheetTitle: 'Send your bouquet', svcLabel: 'Bouquet', lockSvc: true, services: [{ name: 'Your bouquet (' + n + ' stems), ' + total.textContent, mins: 30, price: null }], doneTitle: 'Your bouquet is ordered' });
+          openBooking({ sheetTitle: 'Send your bouquet', kind: 'Bouquet order', svcLabel: 'Bouquet', lockSvc: true, services: [{ name: 'Your bouquet (' + n + ' stems), ' + total.textContent, mins: 30, price: null }], doneTitle: 'Your bouquet is ordered' });
         } }, 'Send it')));
   };
 
@@ -766,7 +809,7 @@
         h('div', { class: 'svc-meta' }, x.mins ? h('span', { class: 'svc-time' }, minsLabel(x.mins)) : null, h('span', { class: 'svc-price' }, priceLabel(x.price)),
           h('button', { type: 'button', class: 'btn btn-primary', 'aria-label': label + ': ' + x.name, onclick: function () { openBooking({ svc: i, sheetTitle: x.name }); } }, label)));
     }));
-    add(mount, ul, h('p', { class: 'svc-note' }, 'Sample services and prices. Yours go here.'));
+    add(mount, ul, demoText('x', null) ? h('p', { class: 'svc-note' }, 'Sample services and prices. Yours go here.') : null);
   }
 
   function renderGift() {
@@ -812,9 +855,21 @@
     var buy = h('button', { type: 'submit', class: 'btn btn-primary btn-block' });
     var form = h('form', { class: 'gc-form', novalidate: true, onsubmit: function (e) {
       e.preventDefault();
+      if (LIVE && LINKS.giftCards) return openLink(LINKS.giftCards);
       var email = $('#gc-email', form).value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.replaceChildren(h('p', { class: 'err', role: 'alert' }, 'Add the email address the gift card should go to.')); $('#gc-email', form).focus(); return; }
       err.replaceChildren();
+      if (LIVE) {
+        buy.disabled = true; buy.textContent = 'Sending\u2026';
+        send('Gift card request', { Amount: money(st.amt), To: st.to, From: st.from, Message: st.msg, 'Send to': email }).then(function () {
+          openSheet('Request sent', function (m) {
+            add(m, h('div', { class: 'enter' }, h('div', { class: 'ticket' },
+              h('div', { class: 'ticket-top' }, tickIcon(), h('div', null, h('h3', null, 'Your ' + money(st.amt) + ' gift card request is in'), h('p', { class: 'card-note' }, 'We\u2019ll email you a payment link today.'))))));
+          });
+          sync(); buy.disabled = false;
+        }, function () { err.replaceChildren(h('p', { class: 'err', role: 'alert' }, sendFail())); sync(); buy.disabled = false; });
+        return;
+      }
       var code = 'GC-' + Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
       openSheet('Gift card sent', function (m) {
         add(m, h('div', { class: 'enter' }, h('div', { class: 'ticket' },
@@ -830,8 +885,8 @@
         h('div', { class: 'field' }, h('label', { for: 'gc-from' }, 'From'), h('input', { class: 'input', id: 'gc-from', maxlength: '30', oninput: function (e) { st.from = e.target.value; sync(); } }))),
       h('div', { class: 'field' }, h('label', { for: 'gc-msg' }, 'Message'), h('textarea', { class: 'input', id: 'gc-msg', maxlength: '120', rows: '2', oninput: function (e) { st.msg = e.target.value; counter.textContent = st.msg.length + ' / 120'; sync(); } })),
       counter,
-      h('div', { class: 'field' }, h('label', { for: 'gc-email' }, 'Send it to (email)'), h('input', { class: 'input', id: 'gc-email', type: 'email', autocomplete: 'email' })),
-      err, buy, h('p', { class: 'foot-note' }, 'Demo only. No payment is taken.'));
+      LIVE && LINKS.giftCards ? null : h('div', { class: 'field' }, h('label', { for: 'gc-email' }, 'Send it to (email)'), h('input', { class: 'input', id: 'gc-email', type: 'email', autocomplete: 'email' })),
+      err, buy, h('p', { class: 'foot-note' }, LIVE ? (LINKS.giftCards ? 'You\u2019ll finish on our secure checkout. The card arrives by email.' : 'We\u2019ll email you a secure payment link.') : 'Demo only. No payment is taken.'));
     drawAmts(); sync();
     add(mount, h('div', { class: 'gc' }, stage, form));
   }
@@ -854,9 +909,15 @@
       h('table', { class: 'hours' }, h('caption', { class: 'sr' }, 'Opening hours'), h('tbody', null, S.hours.map(function (r) {
         return h('tr', { class: r.days.indexOf(today) > -1 ? 'today' : null }, h('td', null, r.label), h('td', null, r.open == null ? 'Closed' : fmtTime(r.open * 60) + ' to ' + fmtTime(r.close * 60)));
       }))),
-      h('p', { class: 'small-note' }, 'Sample hours. Yours go here.'));
+      demoText('x', null) ? h('p', { class: 'small-note' }, 'Sample hours. Yours go here.') : null);
   }
 
+  function renderGallery() {
+    var mount = $('[data-mount="gallery"]'), sec = $('#gallery');
+    if (!mount || !sec || !S.photos || !S.photos.length) return;
+    sec.hidden = false;
+    add(mount, S.photos.map(function (p) { return h('figure', { class: 'ph' }, h('img', { src: p.src, alt: p.alt || '', loading: 'lazy', decoding: 'async' }), p.caption ? h('figcaption', null, p.caption) : null); }));
+  }
   function renderFaq() {
     var mount = $('[data-mount="faq"]'); if (!mount) return;
     add(mount, S.faq.map(function (x) { return h('details', { class: 'qa' }, h('summary', null, x.q), h('p', null, x.a)); }));
@@ -880,7 +941,7 @@
     splitHeadline();
     var hook = $('[data-mount="hook"]');
     try { if (hook && HOOKS[S.hook]) { hook.replaceChildren(); HOOKS[S.hook](hook); } } catch (e) { console.error(e); }
-    [renderServices, renderGift, renderHours, renderFaq].forEach(function (f) { try { f(); } catch (e) { console.error(e); } });
+    [renderServices, renderGallery, renderGift, renderHours, renderFaq].forEach(function (f) { try { f(); } catch (e) { console.error(e); } });
     hdrShadow();
     $$('a[href="#hook"]').forEach(function (a) {
       a.addEventListener('click', function (e) {

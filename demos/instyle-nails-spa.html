@@ -7,10 +7,11 @@
   <title>Instyle Nails &amp; Spa — Ottawa</title>
   <meta name="description" content="Manicures, pedicures and gel at Instyle Nails &amp; Spa in Nepean. See open times and book.">
   <meta name="theme-color" content="#f8e7e2">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&amp;family=Karla:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/v2/site.css?v=2.0.0">
+  <link rel="stylesheet" href="assets/v2/site.css?v=2.1.0">
   
 </head>
 <body>
@@ -61,6 +62,13 @@
     </div>
   </section>
 
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">Take a look inside</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
+    </div>
+  </section>
+
   <section class="sec gift" id="gift" aria-labelledby="gift-title">
     <div class="wrap gift-in">
       <div class="sec-head">
@@ -104,6 +112,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -119,12 +128,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">Instyle Nails &amp; Spa</p>
     <p>3098 Carling Ave, Nepean, ON K2B 7K2<br><a href="tel:6135962112">(613) 596-2112</a></p>
-    <p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    
   </div>
 </footer>
 
@@ -141,7 +152,7 @@
 </dialog>
 
 <script type="application/json" id="site-data">{"v":2,"name":"Instyle Nails & Spa","fullName":"Instyle Nails & Spa","slug":"instyle-nails-spa","category":"nail salon","theme":"salon","hook":"booking","noun":"appointment","city":"Nepean","address":"3098 Carling Ave, Nepean, ON K2B 7K2","street":"3098 Carling Ave","phone":"(613) 596-2112","phoneRaw":"6135962112","website":"https://www.instylenailsottawa.com/","headline":"Your next set, booked in three taps.","sub":"Manicures, pedicures and gel at Instyle Nails & Spa in Nepean. See open times and book.","cta":"Book an appointment","primary":null,"services":[{"name":"Gel manicure","desc":"Shape, cuticle care and gel colour.","mins":45,"price":45},{"name":"Classic manicure","desc":"Shape, cuticle care and polish.","mins":30,"price":30},{"name":"Spa pedicure","desc":"Soak, scrub, massage and polish.","mins":50,"price":50},{"name":"Gel extensions","desc":"Full set, any shape.","mins":90,"price":75},{"name":"Nail art","desc":"Per nail, from simple to detailed.","mins":15,"price":5}],"hours":[{"label":"Tue–Fri","days":[2,3,4,5],"open":10,"close":19},{"label":"Saturday","days":[6],"open":9,"close":17},{"label":"Sun–Mon","days":[0,1],"open":null,"close":null}],"faq":[{"q":"Do I need to book ahead?","a":"Booking is best, especially Fridays and Saturdays. We take walk-ins when we can."},{"q":"How long will my appointment take?","a":"Each service shows its time when you book, so you can plan your day."},{"q":"Can I buy a gift card?","a":"Yes. Gift cards arrive by email and can be used for any service."},{"q":"What's your cancellation policy?","a":"Cancel or move your booking up to 24 hours before at no charge."}],"about":"Instyle Nails & Spa is a nail salon in Nepean. Take an hour for yourself. We'll take care of the rest.","gift":{"amounts":[25,50,100,150]},"offer":{"price":650,"days":7},"staff":["First available","Anna","Mai","Tina"]}</script>
-<script src="assets/v2/site.js?v=2.0.0" defer></script>
+<script src="assets/v2/site.js?v=2.1.0" defer></script>
 <!-- OFFER-BAR:START -->
 <style>
 .offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;

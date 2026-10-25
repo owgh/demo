@@ -6,6 +6,7 @@
   <title>{{BUSINESS_NAME}} — Ottawa</title>
   <meta name="description" content="{{SUB}}">
   <meta name="theme-color" content="{{THEME_COLOR}}">
+  {{HEAD_EXTRA}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="{{FONTS_URL}}" rel="stylesheet">
@@ -17,7 +18,7 @@
 
 <header class="hdr" id="top">
   <div class="wrap hdr-in">
-    <a class="brand" href="#top">{{DISPLAY_NAME}}</a>
+    <a class="brand" href="#top">{{BRAND_LOGO}}{{DISPLAY_NAME}}</a>
     <nav class="nav" aria-label="Main">
       <a href="#services">{{SERVICES_LABEL}}</a>
       <a href="#gift">Gift cards</a>
@@ -57,6 +58,13 @@
         <p class="sec-sub">{{SERVICES_SUB}}</p>
       </div>
       <div data-mount="services"></div>
+    </div>
+  </section>
+
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">{{GALLERY_TITLE}}</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
     </div>
   </section>
 
@@ -103,6 +111,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -118,12 +127,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">{{DISPLAY_NAME}}</p>
     <p>{{ADDRESS}}<br><a href="{{CALL_HREF}}">{{PHONE_SHORT}}</a></p>
-    <p class="ftr-small">Website demo by {{SENDER_NAME}}, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by {{SENDER_NAME}}, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    {{FOOTER_EXTRA}}
   </div>
 </footer>
 

@@ -7,10 +7,11 @@
   <title>Parkwood Animal Hospital &amp; Urgent Care — Ottawa</title>
   <meta name="description" content="Veterinary care in Nepean. Choose your pet, pick a time, and we&#x27;ll see you soon.">
   <meta name="theme-color" content="#ecf5f2">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;800&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/v2/site.css?v=2.0.0">
+  <link rel="stylesheet" href="assets/v2/site.css?v=2.1.0">
   
 </head>
 <body>
@@ -61,6 +62,13 @@
     </div>
   </section>
 
+  <section class="sec gallery" id="gallery" aria-labelledby="gallery-title" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2" id="gallery-title">Take a look inside</h2></div>
+      <div class="gallery-grid" data-mount="gallery"></div>
+    </div>
+  </section>
+
   <section class="sec gift" id="gift" aria-labelledby="gift-title">
     <div class="wrap gift-in">
       <div class="sec-head">
@@ -104,6 +112,7 @@
   </section>
 </main>
 
+<!-- DEMO-ONLY:START -->
 <section class="make" aria-labelledby="make-title">
   <div class="wrap make-in">
     <div>
@@ -119,12 +128,14 @@
     </ul>
   </div>
 </section>
+<!-- DEMO-ONLY:END -->
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <p class="ftr-name">Parkwood Animal Hospital &amp; Urgent Care</p>
     <p>1547 Merivale Rd #8, Nepean, ON K2G 4V3<br><a href="tel:6136955275">(613) 695-5275</a></p>
-    <p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p>
+    <!-- DEMO-ONLY:START --><p class="ftr-small">Website demo by Hussein, Ottawa web developer. Not the official website.</p><!-- DEMO-ONLY:END -->
+    
   </div>
 </footer>
 
@@ -141,7 +152,7 @@
 </dialog>
 
 <script type="application/json" id="site-data">{"v":2,"name":"Parkwood Animal Hospital & Urgent Care","fullName":"Parkwood Animal Hospital & Urgent Care","slug":"parkwood-animal-hospital-urgent-care","category":"veterinarian","theme":"pets","hook":"booking","noun":"visit","city":"Nepean","address":"1547 Merivale Rd #8, Nepean, ON K2G 4V3","street":"1547 Merivale Rd #8","phone":"(613) 695-5275","phoneRaw":"6136955275","website":"http://www.parkwoodanimalhospital.ca/","headline":"Book your pet's visit in a minute.","sub":"Veterinary care in Nepean. Choose your pet, pick a time, and we'll see you soon.","cta":"Book a visit","primary":null,"services":[{"name":"Wellness exam","desc":"Nose-to-tail checkup.","mins":30,"price":95},{"name":"Vaccines","desc":"Core vaccines and boosters.","mins":20,"price":75},{"name":"Sick visit","desc":"Vomiting, limping, skin and ears.","mins":30,"price":110},{"name":"Dental cleaning","desc":"Under anesthesia, with X-rays.","mins":120,"price":650},{"name":"New puppy or kitten","desc":"First exam and vaccine plan.","mins":40,"price":120}],"hours":[{"label":"Mon–Fri","days":[1,2,3,4,5],"open":8,"close":19},{"label":"Saturday","days":[6],"open":9,"close":15},{"label":"Sunday","days":[0],"open":null,"close":null}],"faq":[{"q":"Do you see new patients?","a":"Yes. Book online and bring any records you have."},{"q":"What should I bring?","a":"Your pet's records, any medication they take, and a leash or carrier."},{"q":"Do you see cats and dogs only?","a":"Mostly dogs and cats. Call us about other animals."},{"q":"What if it's an emergency?","a":"Call us right away. We keep time free for urgent cases every day."}],"about":"Parkwood Animal Hospital & Urgent Care cares for pets in Nepean like they're our own. Calm visits, clear prices and time for your questions.","gift":{"amounts":[25,50,100,150]},"offer":{"price":650,"days":7},"pets":true}</script>
-<script src="assets/v2/site.js?v=2.0.0" defer></script>
+<script src="assets/v2/site.js?v=2.1.0" defer></script>
 <!-- OFFER-BAR:START -->
 <style>
 .offer-bar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#121110;color:#fff;

@@ -28,12 +28,13 @@ import site_data as sd
 
 TEMPLATE_FILE = os.path.join(TEMPLATES_DIR, "v2.html")
 GITHUB_PAGES_BASE = f"https://{GITHUB_USERNAME}.github.io/{GITHUB_PAGES_REPO}"
-ASSET_VERSION = "2.0.0"
+ASSET_VERSION = "2.1.0"
 
 THEME_COLOR = {"care": "#edf1ee", "trades": "#1c3fa8", "food": "#fff4e6", "barber": "#122033", "salon": "#f8e7e2",
                "pro": "#f5f6f8", "gym": "#0e1630", "kids": "#ffffff", "pets": "#ecf5f2", "florist": "#fbf0ee", "shop": "#f3f1f7"}
 
 HOOK_FEATURE = sd.HOOK_FEATURE
+GALLERY_TITLE = {"trades": "Our work", "food": "From our kitchen", "florist": "Recent arrangements", "gym": "Inside the gym"}
 
 
 def load_template() -> str:
@@ -45,33 +46,28 @@ def _phone_short(phone):
     return phone.strip() or "Contact us"
 
 
-def generate_demo(lead: dict, template: str) -> str:
-    """Generate the full HTML for one lead."""
-    name = lead.get("business_name", "").strip()
-    slug = make_slug(name)
-    offer = {"price": SITE_PRICE, "days": DELIVERY_DAYS}
-    site = sd.build_site(lead, slug, offer)
-    phone = (lead.get("phone") or "").strip()
+def page_tokens(site: dict, full_name: str) -> dict:
+    """Template tokens for one site (demo or live). Uses the site's own phone and address."""
+    phone = (site.get("phone") or "").strip()
     phone_raw = re.sub(r"[^0-9+]", "", phone)
     hook = site["hook"]
     esc = lambda v: html.escape(str(v), quote=True)
-
-    where = f"{site['street']}, {site['city']}" if site["street"] else site["city"]
-    tokens = {
+    where = f"{site['street']}, {site['city']}" if site.get("street") else site["city"]
+    return {
         "THEME": site["theme"],
         "HOOK": hook,
         "THEME_COLOR": THEME_COLOR[site["theme"]],
         "FONTS_URL": esc(sd.fonts_url(site["theme"])),
         "ASSET_V": ASSET_VERSION,
         "PRIMARY_STYLE": f'<style>html[data-theme]{{--primary:{site["primary"]}}}</style>' if site.get("primary") else "",
-        "BUSINESS_NAME": esc(name),
+        "BUSINESS_NAME": esc(full_name),
         "DISPLAY_NAME": esc(site["name"]),
         "HEADLINE": esc(site["headline"]),
         "SUB": esc(site["sub"]),
         "CTA": esc(site["cta"]),
         "WHERE": esc(where),
         "ADDRESS": esc(site["address"]),
-        "MAP_Q": esc(re.sub(r"\s+", "+", f"{name}, {site['address']}").replace("&", "%26").replace("#", "%23")),
+        "MAP_Q": esc(re.sub(r"\s+", "+", f"{site['name']}, {site['address']}").replace("&", "%26").replace("#", "%23")),
         "CALL_HREF": esc(f"tel:{phone_raw}" if phone_raw else "#visit"),
         "CALL_TEXT": esc(f"Call {phone}" if phone else "Contact us"),
         "PHONE_SHORT": esc(_phone_short(phone)),
@@ -86,9 +82,19 @@ def generate_demo(lead: dict, template: str) -> str:
         "DELIVERY_DAYS": str(DELIVERY_DAYS),
         "SENDER_NAME": esc(SENDER_NAME),
         "SITE_JSON": sd.site_json(site),
+        "BRAND_LOGO": "",
+        "HEAD_EXTRA": "",
+        "FOOTER_EXTRA": "",
+        "GALLERY_TITLE": GALLERY_TITLE.get(site["theme"], "Take a look inside"),
     }
+
+
+def generate_demo(lead: dict, template: str) -> str:
+    """Generate the full HTML for one lead's demo."""
+    name = lead.get("business_name", "").strip()
+    site = sd.build_site(lead, make_slug(name), {"price": SITE_PRICE, "days": DELIVERY_DAYS})
     # offer bar + noindex (see offer_bar.py)
-    return offer_patch(render_template(template, tokens), name)
+    return offer_patch(render_template(template, page_tokens(site, name)), name)
 
 
 def _pick_leads(rows, rebuild):
