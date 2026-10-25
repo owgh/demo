@@ -42,7 +42,7 @@ def _setting(name, default):
 
 SITE_PRICE = int(_setting("SITE_PRICE", 650))
 DELIVERY_DAYS = int(_setting("DELIVERY_DAYS", 7))
-PAY_LINK = (_setting("PAY_LINK", "") or "").strip()
+PAY_LINK = (_setting("PAY_LINK", "") or "https://square.link/u/FyF7a0uB").strip()  # Square: "Website deposit (50%)", $325
 YOUR_PHONE = _setting("YOUR_PHONE", "(343) 597-5450") or ""
 SENDER_NAME = _setting("SENDER_NAME", "Hussein") or "Hussein"
 
