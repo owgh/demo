@@ -115,7 +115,7 @@ def main():
         site["hours"] = [{"label": h[0], "days": h[1], "open": h[2], "close": h[3]} for h in cfg["hours"]]
     site["live"] = True
     site.pop("offer", None)
-    site["links"] = {k: v for k, v in (cfg.get("links") or {}).items() if v}
+    site["links"] = {k: v.strip() for k, v in (cfg.get("links") or {}).items() if isinstance(v, str) and v.strip().startswith("http")}
     if cfg.get("email"):
         site["form"] = cfg.get("formEndpoint") or "https://formsubmit.co/ajax/" + cfg["email"]
     elif cfg.get("formEndpoint"):
