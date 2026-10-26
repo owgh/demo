@@ -862,13 +862,13 @@ def display_name(name):
     return n
 
 
-def city_from_address(address):
+def city_from_address(address, default="Ottawa"):
     """'1459 Ogilvie Rd Unit 3, Gloucester, ON K1J 7P3, Canada' -> 'Gloucester'."""
     parts = [p.strip() for p in (address or "").split(",") if p.strip()]
     for i, p in enumerate(parts):
         if re.match(r"^(ON|Ontario|QC|Québec|Quebec)\b", p) and i > 0:
             return parts[i - 1]
-    return "Ottawa"
+    return default
 
 
 def street_from_address(address):
@@ -887,8 +887,13 @@ def build_site(lead, slug, offer):
     category = (lead.get("category") or "").strip().lower()
     cfg = config_for(category)
     theme = cfg["theme"]
-    city = city_from_address(lead.get("address", ""))
-    fill = lambda s: s.replace("{city}", city).replace("{name}", name)
+    # Leads without an address (worldwide job posts, portfolio examples) get no city at all.
+    city = lead.get("city") or (city_from_address(lead.get("address", "")) if lead.get("address") else "")
+
+    def fill(s):
+        if not city:
+            s = s.replace(" in {city}", "").replace("{city}", "your area")
+        return s.replace("{city}", city).replace("{name}", name)
 
     hours = [{"label": lbl, "days": d, "open": o, "close": c} for lbl, d, o, c in HOURS[theme]]
     site = {
@@ -908,7 +913,7 @@ def build_site(lead, slug, offer):
         "services": cfg.get("services", []),
         "hours": hours,
         "faq": [{"q": q, "a": a} for q, a in FAQ[theme]],
-        "about": ABOUT[theme].format(name=name, city=city, kind=category or "business"),
+        "about": fill(ABOUT[theme].replace("{kind}", category or "business")),
         "gift": {"amounts": [25, 50, 100, 150]},
         "offer": offer,
     }

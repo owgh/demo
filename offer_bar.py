@@ -76,8 +76,21 @@ def _phone_e164(raw):
     return "+" + digits if digits else ""
 
 
-def bar_html(business_name):
+PORTFOLIO = "https://owgh.github.io/#contact"
+
+
+def bar_html(business_name, mode="lead"):
     name = html.escape(business_name)
+    if mode == "job":
+        return (f'{START}\n{CSS}\n<div class="offer-bar" role="region" aria-label="About this draft">'
+                f'<div class="ob-text"><b>Draft prepared for {name}</b> by {html.escape(SENDER_NAME)}, web developer.'
+                f'<small>Price and timeline are in my proposal. Tell me what to change and I\'ll update it.</small></div>'
+                f'</div>\n{FIT_JS}\n{END}')
+    if mode == "example":
+        return (f'{START}\n{CSS}\n<div class="offer-bar" role="region" aria-label="About this example">'
+                f'<div class="ob-text"><b>Example site</b> by {html.escape(SENDER_NAME)}, web developer in Ottawa. '
+                f'{name} is a made-up business.<small>Want one like this? I\'ll build a free draft of yours first.</small></div>'
+                f'<div class="ob-actions"><a class="ob-pay" href="{PORTFOLIO}">Get my free draft</a></div></div>\n{FIT_JS}\n{END}')
     actions = []
     phone = _phone_e164(YOUR_PHONE)
     if phone:
@@ -97,7 +110,7 @@ def business_name_from(page):
     return html.unescape(m.group(1).strip()) if m else ""
 
 
-def patch(page, business_name=None):
+def patch(page, business_name=None, mode="lead"):
     """Return the page with the offer bar, noindex and current price. Idempotent."""
     name = business_name or business_name_from(page)
     if not name:
@@ -110,7 +123,7 @@ def patch(page, business_name=None):
     page = page.replace("bring it to life in 1–2 weeks", f"bring it to life in {DELIVERY_DAYS} days")
     page = re.sub(r"\$\d+ · live in \d+ days · online gift cards included",
                   f"${SITE_PRICE} · live in {DELIVERY_DAYS} days · online gift cards included", page)
-    return page.replace("</body>", bar_html(name) + "\n</body>", 1)
+    return page.replace("</body>", bar_html(name, mode) + "\n</body>", 1)
 
 
 def main():

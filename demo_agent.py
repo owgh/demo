@@ -52,7 +52,7 @@ def page_tokens(site: dict, full_name: str) -> dict:
     phone_raw = re.sub(r"[^0-9+]", "", phone)
     hook = site["hook"]
     esc = lambda v: html.escape(str(v), quote=True)
-    where = f"{site['street']}, {site['city']}" if site.get("street") else site["city"]
+    where = f"{site['street']}, {site['city']}" if site.get("street") and site.get("city") else site.get("city") or ""
     return {
         "THEME": site["theme"],
         "HOOK": hook,
@@ -89,12 +89,37 @@ def page_tokens(site: dict, full_name: str) -> dict:
     }
 
 
-def generate_demo(lead: dict, template: str) -> str:
-    """Generate the full HTML for one lead's demo."""
+def strip_location(page: str) -> str:
+    """For businesses without an address: no map, no directions, no location line."""
+    page = re.sub(r'\s*<div class="map">.*?</iframe>\s*</div>', "", page, flags=re.S)
+    page = re.sub(r'\s*<a class="btn btn-primary" href="https://www.google.com/maps/dir/[^"]*"[^>]*>Get directions</a>', "", page)
+    page = re.sub(r'\s*<address class="addr"></address>', "", page)
+    page = re.sub(r'\s*<p class="where">.*?</p>', "", page, flags=re.S)
+    return page.replace(">Come and see us<", ">Hours and contact<")
+
+
+def generate_demo(lead: dict, template: str, mode: str = "lead", slug: str = None) -> str:
+    """Generate the full HTML for one demo. mode: lead (cold email), job (job post reply), example (portfolio)."""
     name = lead.get("business_name", "").strip()
-    site = sd.build_site(lead, make_slug(name), {"price": SITE_PRICE, "days": DELIVERY_DAYS})
+    site = sd.build_site(lead, slug or make_slug(name), {"price": SITE_PRICE, "days": DELIVERY_DAYS})
+    page = render_template(template, page_tokens(site, name))
+    if not site["address"]:
+        page = strip_location(page)
+    if mode != "lead":
+        page = page.replace('href="assets/', 'href="../assets/').replace('src="assets/', 'src="../assets/')
     # offer bar + noindex (see offer_bar.py)
-    return offer_patch(render_template(template, page_tokens(site, name)), name)
+    return offer_patch(page, site["name"] if mode != "lead" else name, mode=mode)
+
+
+def build_custom(name: str, category: str, slug: str, mode: str, city: str = "", phone: str = "") -> str:
+    """A demo for a business that isn't in the lead log: a job post or a portfolio example.
+    Written to demos/jobs/<slug>.html or demos/examples/<slug>.html; returns the public URL."""
+    folder = {"job": "jobs", "example": "examples"}[mode]
+    lead = {"business_name": name, "category": category, "address": "", "phone": phone, "city": city}
+    os.makedirs(os.path.join(DEMOS_DIR, folder), exist_ok=True)
+    with open(os.path.join(DEMOS_DIR, folder, f"{slug}.html"), "w", encoding="utf-8") as f:
+        f.write(generate_demo(lead, load_template(), mode=mode, slug=slug))
+    return f"{GITHUB_PAGES_BASE}/demos/{folder}/{slug}.html"
 
 
 def _pick_leads(rows, rebuild):
@@ -159,4 +184,9 @@ if __name__ == "__main__":
         category_filter = args[args.index("--category") + 1]
     if "--lead" in args:
         lead_filter = args[args.index("--lead") + 1]
-    run(category_filter=category_filter, lead_filter=lead_filter, rebuild="--rebuild" in args)
+    if "--custom" in args:
+        # python3 demo_agent.py --custom --mode job --name "Bella's Bakery" --category bakery --slug for-bellas-bakery [--city Austin]
+        opt = lambda k, dflt="": args[args.index(k) + 1] if k in args else dflt
+        print(build_custom(opt("--name"), opt("--category"), opt("--slug") or make_slug(opt("--name")), opt("--mode", "job"), opt("--city"), opt("--phone")))
+    else:
+        run(category_filter=category_filter, lead_filter=lead_filter, rebuild="--rebuild" in args)
