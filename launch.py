@@ -86,6 +86,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("client")
     ap.add_argument("--out")
+    ap.add_argument("--preview", action="store_true",
+                    help="a preview to send the client: hidden from Google, a small preview note, no domain files")
     a = ap.parse_args()
 
     cfg = json.load(open(a.client, encoding="utf-8"))
@@ -168,8 +170,8 @@ def main():
                                          for hr in site["hours"] if hr.get("open") is not None],
            "sameAs": [v for v in (cfg.get("social") or {}).values() if v] or None}
     biz = {k: v for k, v in biz.items() if v}
-    head = []
-    if url:
+    head = ['<meta name="robots" content="noindex">'] if a.preview else []
+    if url and not a.preview:
         head.append(f'<link rel="canonical" href="{esc(url)}">')
     head += [f'<meta property="og:type" content="website">',
              f'<meta property="og:title" content="{esc(site["name"])}">',
@@ -194,7 +196,19 @@ def main():
     page = render_template(da.load_template(), tokens)
     page = re.sub(r"<!-- DEMO-ONLY:START -->.*?<!-- DEMO-ONLY:END -->\n?", "", page, flags=re.S)
     page = page.replace(f"<title>{tokens['BUSINESS_NAME']} — Ottawa</title>", f"<title>{tokens['BUSINESS_NAME']} | {esc(site['city'])}</title>")
+    if a.preview:
+        note = ('<div role="note" style="position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;max-width:560px;margin:0 auto;'
+                'padding:10px 14px;border-radius:12px;background:#121614;color:#fff;font:500 14px/1.4 system-ui,sans-serif;'
+                'box-shadow:0 10px 30px rgba(0,0,0,.25)">Preview of your new site. Reply to my email with any changes. '
+                '<span style="opacity:.7">Hussein</span></div>')
+        page = page.replace("</body>", note + "\n</body>", 1)
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(page)
+    if a.preview:
+        leftovers = [w for w in ("offer-bar", "Sample services", "Demo prepared", "{{") if w in page]
+        print(json.dumps({"site": out, "name": site["name"], "preview": True, "photos": len(photos),
+                          "requests_go_to": cfg.get("email") or None,
+                          "check": "clean" if not leftovers else "found demo leftovers: " + ", ".join(leftovers)}, indent=1))
+        return
     open(os.path.join(out, "404.html"), "w", encoding="utf-8").write(
         '<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/"><title>Page not found</title><a href="/">Go to the home page</a>')
     open(os.path.join(out, "robots.txt"), "w").write("User-agent: *\nAllow: /\n" + (f"Sitemap: {url}sitemap.xml\n" if url else ""))
